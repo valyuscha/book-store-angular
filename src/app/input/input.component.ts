@@ -6,24 +6,13 @@ import {Component, Input} from '@angular/core'
   styleUrls: ['./input.component.scss']
 })
 export class InputComponent {
-  @Input() label: string
-  @Input() fieldType: 'login' | 'search' | undefined
-  @Input() isValid: boolean
-  @Input() isTouched: boolean
-  @Input() value: string
-  @Input() placeholder: string
-  @Input() onChange: () => void
-  @Input() onBlur: () => void
-  @Input() errorMessage: string
-
-  constructor() {
-    this.label = ''
-    this.isValid = false
-    this.isTouched = false
-    this.value = ''
-    this.placeholder = ''
-    this.onChange = () => {}
-    this.onBlur = () => {}
-    this.errorMessage = 'Error'
-  }
+  @Input() label: string = ''
+  @Input() fieldType: 'login' | 'search' = 'search'
+  @Input() isValid: boolean = false
+  @Input() isTouched: boolean = false
+  @Input() value: string = ''
+  @Input() placeholder: string = ''
+  @Input() onChange: () => void = () => {}
+  @Input() onBlur: () => void = () => {}
+  @Input() errorMessage: string = 'Error'
 }

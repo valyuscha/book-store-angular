@@ -7,9 +7,5 @@ import {Component, Input} from '@angular/core'
 })
 export class ButtonComponent {
   @Input() btnType: 'purple' | undefined
-  @Input() onClick: () => void
-
-  constructor() {
-    this.onClick = () => {}
-  }
+  @Input() onClick: () => void = () => {}
 }
