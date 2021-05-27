@@ -1,1 +1,24 @@
-/* You can add global styles to this file, and also import other style files */
+* {
+  font-family: 'Noto Sans JP', sans-serif;
+  padding: 0;
+  margin: 0;
+  outline: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
+
+body,
+select,
+button {
+  color: #464646;
+  background: #009898;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 8px;
+  background-color: rgba(0, 0, 0, .1);
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, .4);
+}

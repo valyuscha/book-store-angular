@@ -1,0 +1,51 @@
+.login {
+  &__page-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+
+  &__block-wrapper {
+    width: 90%;
+    max-width: 450px;
+    background: #cccccc;
+    padding: 20px;
+    border-radius: 15px;
+    box-sizing: border-box;
+
+    .submit-button {
+      margin-top: 20px;
+    }
+  }
+
+  &__title {
+    font-size: 30px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .login__page-wrapper {
+    height: 71vh;
+  }
+}
+
+@media screen and (max-width: 468px) {
+  .login__title {
+    font-size: 24px;
+  }
+}
+
+@media screen and (max-width: 384px) {
+  .login__title {
+    font-size: 20px;
+  }
+}
+
+@media screen and (max-width: 327px) {
+  .login__title {
+    font-size: 19px;
+  }
+}

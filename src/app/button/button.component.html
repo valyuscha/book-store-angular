@@ -1,0 +1,6 @@
+<button
+  class="button"
+  (click)="onClick()"
+  [ngStyle]="btnType === 'purple' ? {background: '#be1036'} : {}">
+  <ng-content></ng-content>
+</button>

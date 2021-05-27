@@ -1,0 +1,19 @@
+<div class="login__page-wrapper">
+  <div class="login__block-wrapper">
+    <h2 class="login__title">Welcome to JS Band Store</h2>
+    <form>
+      <app-input
+        label="Name"
+        fieldType="login"
+        placeholder="John Adams"
+        value=""
+        [isValid]="false"
+        [isTouched]="false"
+        errorMessage="Enter the field">
+      </app-input>
+      <div class="submit-button">
+        <app-button (click)="goToCatalogPage()">Log in</app-button>
+      </div>
+    </form>
+  </div>
+</div>
