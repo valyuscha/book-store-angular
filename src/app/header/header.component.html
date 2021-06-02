@@ -3,7 +3,7 @@
     <div class="header__left">
       <h1 class="logo">JS Band Store</h1>
     </div>
-    <div *ngIf="isLoggedIn" class="header__right">
+    <div *ngIf="auth.changedIsLoggedIn | async" class="header__right">
       <div class="profile-logout">
         <button class="logout__button">
           <img src="assets/images/logoutIcon.svg" alt="" class="logout__button_icon">

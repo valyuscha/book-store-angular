@@ -1,5 +1,4 @@
 import {Component, OnInit} from '@angular/core'
-import {Router} from '@angular/router'
 import {AuthService} from '../auth.service'
 
 @Component({
@@ -11,20 +10,9 @@ export class LoginComponent implements OnInit{
   isValid = false
   isTouched = false
 
-  constructor(
-    private router: Router,
-    private auth: AuthService
-  ) {}
+  constructor(public auth: AuthService) {}
 
   ngOnInit() {
     this.auth.logout()
-  }
-
-  ngOnDestroy() {
-    this.auth.login()
-  }
-
-  goToCatalogPage() {
-    this.router.navigateByUrl('/catalog')
   }
 }

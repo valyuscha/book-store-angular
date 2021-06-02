@@ -1,5 +1,4 @@
-import {Component, OnInit} from '@angular/core'
-import {Subscription} from 'rxjs'
+import {Component} from '@angular/core'
 import {AuthService} from '../auth.service'
 
 @Component({
@@ -7,16 +6,6 @@ import {AuthService} from '../auth.service'
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent implements OnInit {
-  subscription!: Subscription
-  isLoggedIn = this.auth.isLoggedIn
-
-  ngOnInit() {
-    this.subscription = this.auth.changedIsLoggedIn
-      .subscribe(
-        (isLoggedIn: boolean) => this.isLoggedIn = isLoggedIn
-      )
-  }
-
+export class HeaderComponent {
   constructor(public auth: AuthService) {}
 }
