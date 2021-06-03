@@ -3,12 +3,12 @@
     <div class="header__left">
       <h1 class="logo">JS Band Store</h1>
     </div>
-    <div *ngIf="auth.changedIsLoggedIn | async" class="header__right">
+    <div *ngIf="auth.isLoggedIn | async" class="header__right">
       <div class="profile-logout">
-        <button class="logout__button">
+        <button class="logout__button" (click)="auth.logout()">
           <img src="assets/images/logoutIcon.svg" alt="" class="logout__button_icon">
         </button>
-        <p class="user-name"></p>
+        <p class="user-name">John Smith</p>
         <img src="assets/images/avatar.jpg" alt="" class="user-avatar">
       </div>
       <div class="cart">

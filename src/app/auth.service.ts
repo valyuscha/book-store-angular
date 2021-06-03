@@ -1,28 +1,30 @@
-import {Injectable} from '@angular/core'
-import {Router} from '@angular/router'
-import {BehaviorSubject, Observable} from 'rxjs'
+import {Injectable} from '@angular/core';
+import {Router} from '@angular/router';
+import {BehaviorSubject, Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private token = localStorage.getItem('token')
-  private _changedIsLoggedIn$ = new BehaviorSubject<boolean>(!!this.token)
+  private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private router: Router) {}
+  constructor(private router: Router) {
+    this._isLoggedIn$.next(!!localStorage.getItem('token'));
+  }
 
-  get changedIsLoggedIn(): Observable<boolean> {
-    return this._changedIsLoggedIn$.asObservable()
+  get isLoggedIn(): Observable<boolean> {
+    return this._isLoggedIn$.asObservable();
   }
 
   login() {
-    this._changedIsLoggedIn$.next(true)
-    localStorage.setItem('token', 'token')
-    this.router.navigateByUrl('/catalog')
+    this._isLoggedIn$.next(true);
+    localStorage.setItem('token', 'token');
+    this.router.navigateByUrl('/catalog');
   }
 
   logout() {
-    this._changedIsLoggedIn$.next(false)
-    localStorage.removeItem('token')
+    this._isLoggedIn$.next(false);
+    localStorage.removeItem('token');
+    this.router.navigateByUrl('/login');
   }
 }
