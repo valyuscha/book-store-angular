@@ -8,8 +8,8 @@
         <button class="logout__button" (click)="auth.logout()">
           <img src="assets/images/logoutIcon.svg" alt="" class="logout__button_icon">
         </button>
-        <p class="user-name">John Smith</p>
-        <img src="assets/images/avatar.jpg" alt="" class="user-avatar">
+        <p class="user-name">{{userInfo.username}}</p>
+        <img [src]="userInfo.avatar" alt="" class="user-avatar">
       </div>
       <div class="cart">
         <img src="assets/images/cartIcon.svg" alt="" class="cart__icon">

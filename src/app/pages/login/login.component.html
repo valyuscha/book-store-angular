@@ -1,0 +1,62 @@
+<div *ngIf="!isLoading" class="login__page-wrapper">
+  <div class="login__block-wrapper">
+    <h2 class="login__title">Welcome to JS Band Store</h2>
+    <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+      <div class="input__wrapper">
+        <label
+          for="input"
+          class="input__label"
+          [style.color]="!signInForm?.get('userName')?.valid && signInForm?.get('userName')?.touched ? '#ff0000' : '#009898'">
+          Name
+        </label>
+        <input
+          id="input"
+          class="input"
+          type="text"
+          formControlName="userName"
+          placeholder="John Adams"
+          [ngStyle]="{
+            border: !signInForm?.get('userName')?.valid && signInForm?.get('userName')?.touched ? '2px solid #ff0000' : '2px solid #009898',
+            padding: '10px 15px'
+          }">
+        <p
+          class="error-message"
+          [style.opacity]="!signInForm?.get('userName')?.valid && signInForm?.get('userName')?.touched ? 1 : 0">
+          {{
+            signInForm?.get('userName')?.errors?.required ? 'Enter your name'
+              : signInForm?.get('userName')?.errors?.whitespace ? 'Your name cannot be empty'
+              : signInForm?.get('userName')?.errors?.minlength ? 'Name is too short'
+              : signInForm?.get('userName')?.errors?.maxlength ? 'Name is too long'
+                : 'Error'
+          }}
+        </p>
+      </div>
+      <div class="submit-button">
+        <button class="button" [class.invalid-button]="!signInForm.valid">
+          Log in
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="spinner">
+  <sa-spinner-infinity
+    *ngIf="isLoading"
+    color="#0000ff"
+    secondaryColor="#fff"
+    size="100">
+  </sa-spinner-infinity>
+</div>
+
+<div
+  [ngStyle]="{transform: isServerErrorMessageVisible ? 'translateY(0)' : 'translateY(-100%)'}"
+  class="server-error-message-block__wrapper">
+  <div class="message__wrapper">
+    <img src="assets/images/error-icon.svg" alt="" class="error-icon">
+    <p class="message__content">Ooooops. Something went wrong. Try again a little bit later.</p>
+  </div>
+  <button class="hide-message-btn" (click)="closeErrorMessage()">
+    <img src="assets/images/hide-error-message.svg" alt="" class="hide-message-icon">
+  </button>
+</div>

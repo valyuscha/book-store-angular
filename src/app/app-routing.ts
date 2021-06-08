@@ -1,8 +1,7 @@
 import {Routes} from '@angular/router';
-import {LoginComponent} from './login/login.component';
-import {BooksListComponent} from './books-list/books-list.component';
-import {GuardIfUserLoggedIn} from './guard-if-user-logged-in.service';
-import {GuardIfUserNotLoggedIn} from './guard-if-user-not-logged-in.service';
+import {LoginComponent} from './pages/login/login.component';
+import {BooksListComponent} from './pages/books-list/books-list.component';
+import {GuardIfUserNotLoggedIn, GuardIfUserLoggedIn} from 'guards';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/catalog', pathMatch: 'full'},

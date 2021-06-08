@@ -6,14 +6,14 @@ import {
   RouterStateSnapshot,
   UrlTree
 } from '@angular/router';
-import {AuthService} from './auth.service';
 import {Observable} from 'rxjs';
+import {AuthService} from 'services';
 import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
-export class GuardIfUserNotLoggedIn implements CanActivate {
+export class GuardIfUserLoggedIn implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {
   }
 
@@ -21,6 +21,6 @@ export class GuardIfUserNotLoggedIn implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.isLoggedIn.pipe(map(isLoggedIn => !isLoggedIn ? true : this.router.parseUrl('/catalog')));
+    return this.auth.isLoggedIn.pipe(map(isLoggedIn => isLoggedIn ? true : this.router.parseUrl('/login')));
   }
 }

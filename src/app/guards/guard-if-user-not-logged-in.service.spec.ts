@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GuardIfUserNotLoggedInService } from './guard-if-user-not-logged-in.service';
+import { GuardIfUserNotLoggedIn } from './guard-if-user-not-logged-in.service';
 
 describe('GuardIfUserNotLoggedInService', () => {
-  let service: GuardIfUserNotLoggedInService;
+  let service: GuardIfUserNotLoggedIn;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(GuardIfUserNotLoggedInService);
+    service = TestBed.inject(GuardIfUserNotLoggedIn);
   });
 
   it('should be created', () => {
