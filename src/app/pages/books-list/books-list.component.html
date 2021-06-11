@@ -1,1 +1,21 @@
-<h2>Books list page</h2>
+<div *ngIf="!isLoading" class="books-catalog__wrapper">
+  <app-books-catalog-filters></app-books-catalog-filters>
+  <div *ngIf="books.length" class="books-wrapper">
+    <app-book-card *ngFor="let book of books" [book]="book"></app-book-card>
+  </div>
+  <div *ngIf="!books.length" class="no-books__wrapper">
+    <img src="assets/images/bookIcon.svg" alt="">
+    <p>No books</p>
+  </div>
+</div>
+
+<div class="spinner">
+  <sa-spinner-infinity
+    *ngIf="isLoading"
+    color="#0000ff"
+    secondaryColor="#fff"
+    size="100">
+  </sa-spinner-infinity>
+</div>
+
+<app-confirm-logout-modal></app-confirm-logout-modal>

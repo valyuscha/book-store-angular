@@ -1,0 +1,68 @@
+.card {
+  &__wrapper {
+    width: 100%;
+    padding: 0 10px;
+    box-sizing: border-box;
+  }
+
+  &__content-wrapper {
+    padding: 15px;
+    background: #4B0082;
+    border-radius: 5px;
+    box-sizing: border-box;
+    color: #ffffff;
+    margin-bottom: 20px;
+  }
+
+  &__book-cover {
+    height: 240px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 5px;
+    box-shadow: 3px 13px 12px -8px rgba(34, 60, 80, .5);
+    margin-bottom: 15px;
+  }
+
+  &__book-name {
+    font-size: 16px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 15px;
+  }
+
+  &__book-author {
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 20px;
+  }
+
+  &__price_view-btn-wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__price {
+    font-size: 16px;
+    font-weight: 600;
+  }
+}
+
+@media screen and (max-width: 730px) {
+  .card {
+    &__book-cover {
+      height: calc(50vw - 90px);
+    }
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .card {
+    &__book-cover {
+      height: 240px;
+    }
+  }
+}

@@ -6,7 +6,7 @@ import {
   RouterStateSnapshot,
   UrlTree
 } from '@angular/router';
-import {ApiService, AuthService} from 'services';
+import {AuthService} from 'services';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
 
@@ -21,6 +21,6 @@ export class GuardIfUserNotLoggedIn implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.isLoggedIn.pipe(map(isLoggedIn => !isLoggedIn ? true : this.router.parseUrl('/catalog')));
+    return this.auth.isLoggedIn$.pipe(map(isLoggedIn => !isLoggedIn ? true : this.router.parseUrl('/catalog')));
   }
 }

@@ -21,6 +21,6 @@ export class GuardIfUserLoggedIn implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
-    return this.auth.isLoggedIn.pipe(map(isLoggedIn => isLoggedIn ? true : this.router.parseUrl('/login')));
+    return this.auth.isLoggedIn$.pipe(map(isLoggedIn => isLoggedIn ? true : this.router.parseUrl('/login')));
   }
 }

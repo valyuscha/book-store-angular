@@ -1,5 +1,5 @@
-import {Component} from '@angular/core';
-import {AuthService} from 'services';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ApiService, AuthService} from 'services';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -7,13 +7,13 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit, OnDestroy{
   signInForm: FormGroup;
   isLoading = false;
   isServerErrorMessageVisible = false;
   serverErrorMessage = '';
 
-  constructor(public auth: AuthService) {
+  constructor(public auth: AuthService, private api: ApiService) {
     this.signInForm = new FormGroup({
       userName: new FormControl(
         null,
@@ -26,17 +26,12 @@ export class LoginComponent {
       )
     });
 
-    this.auth.isLoading$.subscribe(isLoading => {
-      this.isLoading = isLoading
-    });
+    this.auth.serverErrorMessage$.subscribe(message => this.serverErrorMessage = message);
+    this.auth.isServerErrorMessageVisible$.subscribe(isVisible => this.isServerErrorMessageVisible = isVisible);
+  }
 
-    this.auth.serverErrorMessage$.subscribe(message => {
-      this.serverErrorMessage = message;
-    });
-
-    this.auth.isServerErrorMessageVisible$.subscribe(isVisible => {
-      this.isServerErrorMessageVisible = isVisible;
-    });
+  ngOnInit() {
+    this.api.isLoading$.subscribe(isLoading => this.isLoading = isLoading);
   }
 
   noWhitespaceValidator(control: FormControl) {
@@ -44,14 +39,36 @@ export class LoginComponent {
     return !isWhitespace ? null : {'whitespace': true};
   }
 
+  setLoginInputErrorMessage(): string {
+    if (this.signInForm.get('userName')?.errors?.required) {
+      return 'Enter your name';
+    }
+
+    if (this.signInForm.get('userName')?.errors?.whitespace) {
+      return 'Your name cannot be empty';
+    }
+
+    if (this.signInForm.get('userName')?.errors?.minlength) {
+      return 'Name is too short';
+    }
+
+    if (this.signInForm.get('userName')?.errors?.maxlength) {
+      return 'Name is too long';
+    }
+
+    return 'Error'
+  }
+
   onSubmit() {
     if (!this.signInForm.valid) return;
-    this.isLoading = true;
+    this.api.startLoading();
     this.auth.login(this.signInForm.getRawValue().userName)
     this.signInForm.reset();
   }
 
-  closeErrorMessage() {
-    this.isServerErrorMessageVisible = false;
+  ngOnDestroy() {
+    // this.api.isLoading$.unsubscribe();
+    this.auth.serverErrorMessage$.unsubscribe();
+    this.auth.isServerErrorMessageVisible$.unsubscribe();
   }
 }

@@ -1,0 +1,13 @@
+<div class="card__wrapper">
+  <div class="card__content-wrapper">
+    <div class="card__book-cover" [style.background]="'url(' + book.cover + ') no-repeat 50% 50%/cover'"></div>
+    <h3 class="card__book-name">{{book.title}}</h3>
+    <h4 class="card__book-author">{{book.author}}</h4>
+    <div class="card__price_view-btn-wrapper">
+      <span class="card__price">{{book.price}} $</span>
+      <div>
+        <button class="button">View</button>
+      </div>
+    </div>
+  </div>
+</div>

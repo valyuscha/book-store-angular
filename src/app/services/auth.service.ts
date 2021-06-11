@@ -10,39 +10,57 @@ import {ApiService} from './api.service';
   providedIn: 'root'
 })
 export class AuthService implements OnInit {
-  userInfo$ = new ReplaySubject<IUser>();
-  isLoading$ = new BehaviorSubject<boolean>(false);
-  isServerErrorMessageVisible$ = new BehaviorSubject(false);
-  serverErrorMessage$ = new BehaviorSubject('');
+  private _userInfo$ = new ReplaySubject<IUser>();
+  private _isServerErrorMessageVisible$ = new BehaviorSubject(false);
+  private _serverErrorMessage$ = new BehaviorSubject('');
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
   constructor(private router: Router, private api: ApiService) {
     this.setUserInfo();
   }
 
-  get isLoggedIn(): Observable<boolean> {
+  get isLoggedIn$(): Observable<boolean> {
     return this._isLoggedIn$.asObservable();
+  }
+
+  get userInfo$(): Observable<IUser> {
+    return this._userInfo$.asObservable();
+  }
+
+  get isServerErrorMessageVisible$(): BehaviorSubject<boolean> {
+    return this._isServerErrorMessageVisible$;
+  }
+
+  get serverErrorMessage$(): BehaviorSubject<string> {
+    return this._serverErrorMessage$;
   }
 
   ngOnInit() {
     this.setUserInfo();
   }
 
+  showServerErrorMessage() {
+    this._isServerErrorMessageVisible$.next(true);
+  }
+
+  hideServerErrorMessage() {
+    this._isServerErrorMessageVisible$.next(false);
+  }
+
   login(userName: string) {
-    this.isLoading$.next(true);
+    this.api.startLoading();
     return this.api.login(userName)
       .subscribe(response => {
         localStorage.setItem('userInfo', JSON.stringify(response));
         if (response) {
           this.setUserInfo();
-          this._isLoggedIn$.next(true);
-          this.isLoading$.next(false);
           this.router.navigateByUrl('/catalog');
+          this.api.stopLoading();
         }
       }, error => {
-        this.serverErrorMessage$.next(error.message);
-        this.isServerErrorMessageVisible$.next(true);
-        this.isLoading$.next(false);
+        this._serverErrorMessage$.next(error.message);
+        this.showServerErrorMessage();
+        this.api.stopLoading();
       });
   }
 
@@ -50,14 +68,15 @@ export class AuthService implements OnInit {
     this._isLoggedIn$.next(false);
     localStorage.removeItem('userInfo');
     this.router.navigateByUrl('/login');
+    this.api.stopLoading();
   }
 
   setUserInfo() {
     const userInfo = localStorage.getItem('userInfo');
 
     if (userInfo) {
-      this.userInfo$.next(JSON.parse(userInfo));
-      this._isLoggedIn$.next(!!this.userInfo$.pipe(map(userInfo => !!userInfo.token)));
+      this._userInfo$.next(JSON.parse(userInfo));
+      this._isLoggedIn$.next(!!this._userInfo$.pipe(map(userInfo => !!userInfo.token)));
     }
   }
 }
