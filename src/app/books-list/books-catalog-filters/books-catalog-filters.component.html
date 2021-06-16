@@ -2,14 +2,14 @@
   <div class="filters__open-close-filters-wrapper" (click)="areFiltersVisible = !areFiltersVisible">
     <h3>Filters</h3>
     <button>
-      <img src="assets/images/angleDownIcon.svg" alt="" [style.transform]="areFiltersVisible ? 'rotate(0)' : 'rotate(-90deg)'">
+      <img src="../../../assets/images/angleDownIcon.svg" alt="" [style.transform]="areFiltersVisible ? 'rotate(0)' : 'rotate(-90deg)'">
     </button>
   </div>
   <div class="filters__fields-wrapper" [style.maxHeight]="areFiltersVisible ? '500px' : 0">
     <div class="filters__field-wrapper">
       <label>Search by name</label>
       <input type="text" class="input" placeholder="book name" #bookTitle (input)="filterByName(bookTitle.value, priceSelect.value)">
-      <img src="assets/images/searchIcon.svg" alt="">
+      <img src="../../../assets/images/searchIcon.svg" alt="">
     </div>
     <div class="filters__field-wrapper">
       <label>Search by price</label>

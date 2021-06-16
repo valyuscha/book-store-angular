@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AuthService, ModalsService} from 'services';
+import {AuthService, CartService, ModalsService} from 'services';
 import {IUser} from 'interfaces';
 
 @Component({
@@ -10,9 +10,7 @@ import {IUser} from 'interfaces';
 export class HeaderComponent {
   userInfo: IUser = {username: '', avatar: '', token: ''};
 
-  constructor(public auth: AuthService, public modalsService: ModalsService) {
-    this.auth.userInfo$.subscribe(userInfo => {
-      this.userInfo = userInfo;
-    });
+  constructor(public auth: AuthService, public modalsService: ModalsService, public cart: CartService) {
+    this.auth.userInfo$.subscribe(userInfo => this.userInfo = userInfo);
   }
 }

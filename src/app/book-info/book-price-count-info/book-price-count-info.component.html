@@ -1,0 +1,27 @@
+<div class="book-price-count-info__wrapper">
+  <div class="info-part__wrapper">
+    <p class="info-part__label">Price, $</p>
+    <p class="info-part__value">{{activeBook.price}}</p>
+  </div>
+  <div class="info-part__wrapper">
+    <p class="info-part__label">Count</p>
+    <div class="info-part__count-value">
+      <button
+        [ngClass]="{'can-increase-decrease-btn': canIncreaseBooksAmount, 'can-not-increase-decrease-btn': !canIncreaseBooksAmount}"
+        (click)="changeBooksAmount('add')">
+        <img src="assets/images/plusIcon.svg" alt="">
+      </button>
+      <p>{{booksCount}}</p>
+      <button
+        [ngClass]="{'can-increase-decrease-btn': canDecreaseBooksAmount, 'can-not-increase-decrease-btn': !canDecreaseBooksAmount}"
+        (click)="changeBooksAmount('remove')">
+        <img src="assets/images/minusIcon.svg" alt="">
+      </button>
+    </div>
+  </div>
+  <div class="info-part__wrapper">
+    <p class="info-part__label">Total price, $</p>
+    <p class="info-part__value">{{totalPrice}}</p>
+  </div>
+  <button class="button info-part__add-to-cart-btn" (click)="addNewBookToCart()">Add to Cart</button>
+</div>

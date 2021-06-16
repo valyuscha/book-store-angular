@@ -7,13 +7,16 @@ import {SpinnerInfinityModule} from 'spinners-angular/spinner-infinity';
 
 import {routes} from 'app-routing';
 import {AppComponent} from 'app.component';
-import {HeaderComponent} from 'layouts';
-import {LoginComponent, BooksListComponent} from 'pages';
+import {HeaderComponent} from 'header/header.component';
+import {LoginComponent} from 'login/login.component';
+import {BooksListComponent} from 'books-list/books-list.component';
+import {BookInfoComponent} from 'book-info/book-info.component';
 import {GuardIfUserLoggedIn, GuardIfUserNotLoggedIn} from 'guards';
 import {AuthService} from 'services';
-import { ConfirmLogoutModalComponent } from './modals/confirm-logout-modal/confirm-logout-modal.component';
-import { BookCardComponent } from 'components';
-import { BooksCatalogFiltersComponent } from './components/books-catalog-filters/books-catalog-filters.component';
+import {ConfirmLogoutModalComponent} from 'modals';
+import {BookCardComponent} from 'books-list/book-card/book-card.component';
+import {BookPriceCountInfoComponent} from 'book-info/book-price-count-info/book-price-count-info.component';
+import {BooksCatalogFiltersComponent} from './books-list/books-catalog-filters/books-catalog-filters.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +26,9 @@ import { BooksCatalogFiltersComponent } from './components/books-catalog-filters
     BooksListComponent,
     ConfirmLogoutModalComponent,
     BookCardComponent,
-    BooksCatalogFiltersComponent
+    BooksCatalogFiltersComponent,
+    BookInfoComponent,
+    BookPriceCountInfoComponent
   ],
   imports: [
     BrowserModule,

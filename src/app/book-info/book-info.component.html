@@ -1,0 +1,39 @@
+<div *ngIf="!isLoading" class="book-info__wrapper">
+  <h2 class="book-info__title">{{activeBook.title}}</h2>
+  <div class="book-info__content">
+    <div class="book-info__desktop-wrapper">
+      <div class="book-info__cover-author-level-wrapper">
+        <img [src]="activeBook.cover" alt="">
+        <p class="book-info__author"><span class="book-info__desc-label">Author: </span>{{activeBook.author}}</p>
+        <p class="book-info__level"><span class="book-info__desc-label">Level: </span>{{activeBook.level}}</p>
+      </div>
+      <div class="book-info__tags-desc-wrapper">
+        <p class="book-info__tags"><span class="book-info__desc-label">Tags: </span>{{activeBook.tags.join(', ')}}</p>
+        <p class="book-info__desc"><span class="book-info__desc-label">Description: </span>{{activeBook.description}}</p>
+      </div>
+    </div>
+    <div class="book-info__mobile-tablet-wrapper">
+      <img [src]="activeBook.cover" alt="">
+      <div class="book-info__author-level-tags-desc-wrapper">
+        <p class="book-info__author"><span class="book-info__desc-label">Author: </span>{{activeBook.author}}</p>
+        <p class="book-info__level"><span class="book-info__desc-label">Level: </span>{{activeBook.level}}</p>
+        <p class="book-info__tags"><span class="book-info__desc-label">Tags: </span>{{activeBook.tags.join(', ')}}</p>
+        <p class="book-info__desc"><span class="book-info__desc-label">Description: </span>{{activeBook.description}}</p>
+      </div>
+    </div>
+    <div class="book-info__price-count-info-wrapper">
+      <app-book-price-count-info [activeBook]="activeBook"></app-book-price-count-info>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="isLoading" class="spinner">
+  <sa-spinner-infinity
+    *ngIf="isLoading"
+    color="#0000ff"
+    secondaryColor="#fff"
+    size="100">
+  </sa-spinner-infinity>
+</div>
+
+<app-confirm-logout-modal></app-confirm-logout-modal>

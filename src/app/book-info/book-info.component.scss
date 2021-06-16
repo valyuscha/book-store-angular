@@ -1,0 +1,193 @@
+.book-info {
+  &__wrapper {
+    width: 90%;
+    max-width: 1250px;
+    margin: 20px auto;
+  }
+
+  &__title {
+    font-size: 30px;
+    margin-bottom: 30px;
+    max-height: 90px;
+    overflow: auto;
+  }
+
+  &__content {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__desktop-wrapper {
+    width: 47%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__cover-author-level-wrapper {
+    width: 48%;
+
+    img {
+      width: 100%;
+      height: 300px;
+    }
+  }
+
+  &__author {
+    font-size: 16px;
+    margin-top: 15px;
+    font-weight: 600;
+    max-height: 70px;
+    overflow: auto;
+  }
+
+  &__level {
+    font-size: 14px;
+    font-weight: 600;
+    margin-top: 10px;
+  }
+
+  &__tags-desc-wrapper {
+    width: 48%;
+  }
+
+  &__tags {
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  &__desc {
+    font-size: 14px;
+    font-weight: 600;
+    max-height: 400px;
+    overflow: auto;
+    margin-top: 10px;
+  }
+
+  &__desc-label {
+    font-weight: 800;
+    margin-right: 5px;
+  }
+
+  &__mobile-tablet-wrapper {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__author-level-tags-desc-wrapper {
+    width: 48%;
+  }
+
+  &__price-count-info-wrapper {
+    width: 47%;
+  }
+}
+
+@media screen and (max-width: 990px) {
+  .book-info {
+    &__desktop-wrapper {
+      flex-direction: column;
+    }
+
+    &__cover-author-level-wrapper {
+      width: 100%;
+
+      img {
+        width: 70%;
+      }
+    }
+
+    &__tags-desc-wrapper {
+      width: 100%;
+    }
+
+    &__tags {
+      margin-top: 10px;
+    }
+  }
+}
+
+@media screen and (max-width: 690px) {
+  .book-info {
+    &__cover-author-level-wrapper {
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .book-info {
+    &__wrapper {
+      padding-top: 80px;
+    }
+  }
+}
+
+@media screen and (max-width: 649px) {
+  .book-info {
+    &__title {
+      font-size: 24px;
+    }
+  }
+}
+
+@media screen and (min-width: 600px) {
+  .book-info {
+    &__mobile-tablet-wrapper {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .book-info {
+    &__content {
+      flex-direction: column;
+    }
+
+    &__desktop-wrapper {
+      display: none;
+    }
+
+    &__cover-author-level-wrapper {
+      img {
+        width: 48%;
+      }
+    }
+
+    &__author {
+      margin-top: 0;
+    }
+
+    &__price-count-info-wrapper {
+      margin: 30px auto;
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .book-info {
+    &__cover-author-level-wrapper {
+      img {
+        width: 100%;
+        max-width: 250px;
+        margin: 0 auto;
+      }
+    }
+
+    &__author {
+      margin-top: 20px;
+    }
+
+    &__mobile-tablet-wrapper {
+      flex-direction: column;
+    }
+
+    &__author-level-tags-desc-wrapper {
+      width: 100%;
+    }
+  }
+}

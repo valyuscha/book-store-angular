@@ -5,6 +5,7 @@ import {map} from 'rxjs/operators';
 
 import {IUser} from 'interfaces';
 import {ApiService} from './api.service';
+import {CartService} from './cart.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ export class AuthService implements OnInit {
   private _serverErrorMessage$ = new BehaviorSubject('');
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private router: Router, private api: ApiService) {
+  constructor(private router: Router, private api: ApiService, private cart: CartService) {
     this.setUserInfo();
   }
 
@@ -68,6 +69,7 @@ export class AuthService implements OnInit {
     this._isLoggedIn$.next(false);
     localStorage.removeItem('userInfo');
     this.router.navigateByUrl('/login');
+    this.cart.clear();
     this.api.stopLoading();
   }
 

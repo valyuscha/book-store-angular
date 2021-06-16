@@ -2,7 +2,6 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDefaultBook, IUser} from 'interfaces';
 import {BehaviorSubject} from 'rxjs';
-import {map} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -44,6 +43,21 @@ export class ApiService {
 
     return this.http.get<IDefaultBook[]>(
       'https://js-band-store-api.glitch.me/books',
+      {
+        headers: new HttpHeaders({"Authorization": `Bearer ${token}`})
+      }
+    )
+  }
+
+  getCurrentBookInfo(bookId: number) {
+    const userInfo = localStorage.getItem('userInfo');
+    let token = '';
+    if (userInfo) {
+      token =  JSON.parse(userInfo).token
+    }
+
+    return this.http.get<IDefaultBook>(
+      `https://js-band-store-api.glitch.me/books/${bookId}`,
       {
         headers: new HttpHeaders({"Authorization": `Bearer ${token}`})
       }

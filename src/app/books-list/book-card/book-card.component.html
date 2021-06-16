@@ -6,7 +6,7 @@
     <div class="card__price_view-btn-wrapper">
       <span class="card__price">{{book.price}} $</span>
       <div>
-        <button class="button">View</button>
+        <button class="button" [routerLink]="'/catalog/' + book.id">View</button>
       </div>
     </div>
   </div>

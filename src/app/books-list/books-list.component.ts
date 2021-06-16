@@ -19,7 +19,6 @@ export class BooksListComponent implements OnInit, OnDestroy {
     this.api.startLoading();
     this.api.getAllBooks()
       .subscribe(books => {
-        if (!books.length) this.auth.logout();
         this.booksService.setBooksForRender(books);
         this.booksService.setAllBooks(books);
         this.api.stopLoading();
