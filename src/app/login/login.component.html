@@ -1,4 +1,4 @@
-<div *ngIf="!isLoading" class="login__page-wrapper">
+<div *ngIf="!(loader.isLoading$ | async)" class="login__page-wrapper">
   <div class="login__block-wrapper">
     <h2 class="login__title">Welcome to JS Band Store</h2>
     <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
@@ -6,7 +6,11 @@
         <label
           for="input"
           class="input__label"
-          [style.color]="!signInForm.get('userName')?.valid && signInForm.get('userName')?.touched ? '#ff0000' : '#009898'">
+          [ngClass]="{
+            'invalid-touched-field': !signInForm.get('userName')?.valid && signInForm.get('userName')?.touched,
+            'valid-field': signInForm.get('userName')?.valid && signInForm.get('userName')?.touched
+              || !signInForm.get('userName')?.valid && !signInForm.get('userName')?.touched
+            }">
           Name
         </label>
         <input
@@ -14,8 +18,7 @@
           class="input"
           type="text"
           formControlName="userName"
-          placeholder="John Adams"
-          [style.padding]="'10px 15px'">
+          placeholder="John Adams">
         <p class="error-message">{{setLoginInputErrorMessage()}}</p>
       </div>
       <div class="submit-button">
@@ -27,23 +30,19 @@
   </div>
 </div>
 
-<div class="spinner">
-  <sa-spinner-infinity
-    *ngIf="isLoading"
-    color="#0000ff"
-    secondaryColor="#fff"
-    size="100">
-  </sa-spinner-infinity>
-</div>
+<app-loader></app-loader>
 
 <div
-  [style.transform]="isServerErrorMessageVisible ? 'translateY(0)' : 'translateY(-100%)'"
+  [ngClass]="{
+    'server-error-message-visible': auth.isServerErrorMessageVisible$ | async,
+    'server-error-message-not-visible': !(auth.isServerErrorMessageVisible$ | async)
+  }"
   class="server-error-message-block__wrapper">
   <div class="message__wrapper">
-    <img src="../../assets/images/error-icon.svg" alt="" class="error-icon">
+    <img src="assets/images/error-icon.svg" alt="" class="error-icon">
     <p class="message__content">Ooooops. Something went wrong. Try again a little bit later.</p>
   </div>
   <button class="hide-message-btn" (click)="auth.hideServerErrorMessage()">
-    <img src="../../assets/images/hide-error-message.svg" alt="" class="hide-message-icon">
+    <img src="assets/images/hide-error-message.svg" alt="" class="hide-message-icon">
   </button>
 </div>

@@ -61,7 +61,6 @@ export class CartService {
   }
 
   add(book: IDefaultBook, addedCount: number, currentBookTotalPrice: number) {
-    console.log(this.books);
     const booksIds = Object.keys(this.books);
 
     const newBook: ICartBook = {

@@ -7,9 +7,6 @@ import {AuthService, ModalsService} from 'services';
   styleUrls: ['./confirm-logout-modal.component.scss']
 })
 export class ConfirmLogoutModalComponent {
-  isModalVisible = false;
-
   constructor(public modalsService: ModalsService, public auth: AuthService) {
-    this.modalsService.isConfirmLogoutModalVisible$.subscribe(isVisible => this.isModalVisible = isVisible);
   }
 }

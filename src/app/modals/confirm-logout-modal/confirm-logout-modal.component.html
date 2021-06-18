@@ -1,4 +1,4 @@
-<div *ngIf="isModalVisible" class="modal__wrapper">
+<div *ngIf="modalsService.isConfirmLogoutModalVisible$ | async" class="modal__wrapper">
   <div class="modal__content-wrapper">
     <h2 class="modal__message">Do you really want to logout?</h2>
     <div class="modal__btns-wrapper">

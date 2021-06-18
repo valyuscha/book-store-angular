@@ -17,6 +17,7 @@ import {ConfirmLogoutModalComponent} from 'modals';
 import {BookCardComponent} from 'books-list/book-card/book-card.component';
 import {BookPriceCountInfoComponent} from 'book-info/book-price-count-info/book-price-count-info.component';
 import {BooksCatalogFiltersComponent} from './books-list/books-catalog-filters/books-catalog-filters.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {BooksCatalogFiltersComponent} from './books-list/books-catalog-filters/b
     BookCardComponent,
     BooksCatalogFiltersComponent,
     BookInfoComponent,
-    BookPriceCountInfoComponent
+    BookPriceCountInfoComponent,
+    LoaderComponent
   ],
   imports: [
     BrowserModule,

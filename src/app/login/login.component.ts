@@ -1,5 +1,5 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {ApiService, AuthService} from 'services';
+import {Component} from '@angular/core';
+import {AuthService, LoaderService} from 'services';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
 @Component({
@@ -7,13 +7,10 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit, OnDestroy{
+export class LoginComponent {
   signInForm: FormGroup;
-  isLoading = false;
-  isServerErrorMessageVisible = false;
-  serverErrorMessage = '';
 
-  constructor(public auth: AuthService, private api: ApiService) {
+  constructor(public auth: AuthService, public loader: LoaderService) {
     this.signInForm = new FormGroup({
       userName: new FormControl(
         null,
@@ -25,13 +22,6 @@ export class LoginComponent implements OnInit, OnDestroy{
         ]
       )
     });
-
-    this.auth.serverErrorMessage$.subscribe(message => this.serverErrorMessage = message);
-    this.auth.isServerErrorMessageVisible$.subscribe(isVisible => this.isServerErrorMessageVisible = isVisible);
-  }
-
-  ngOnInit() {
-    this.api.isLoading$.subscribe(isLoading => this.isLoading = isLoading);
   }
 
   noWhitespaceValidator(control: FormControl) {
@@ -61,14 +51,8 @@ export class LoginComponent implements OnInit, OnDestroy{
 
   onSubmit() {
     if (!this.signInForm.valid) return;
-    this.api.startLoading();
+    this.loader.startLoading();
     this.auth.login(this.signInForm.getRawValue().userName)
     this.signInForm.reset();
-  }
-
-  ngOnDestroy() {
-    // this.api.isLoading$.unsubscribe();
-    this.auth.serverErrorMessage$.unsubscribe();
-    this.auth.isServerErrorMessageVisible$.unsubscribe();
   }
 }

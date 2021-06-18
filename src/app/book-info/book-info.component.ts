@@ -1,14 +1,17 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {IDefaultBook} from 'interfaces';
-import {ApiService, AuthService} from 'services';
+import {ApiService, AuthService, LoaderService} from 'services';
+import {IDefaultBook} from '../interfaces';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-book-info',
   templateUrl: './book-info.component.html',
   styleUrls: ['./book-info.component.scss']
 })
-export class BookInfoComponent implements OnInit {
+export class BookInfoComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   activeBook: IDefaultBook = {
     id: '',
     count: 0,
@@ -20,23 +23,19 @@ export class BookInfoComponent implements OnInit {
     cover: '',
     tags: ['']
   };
-  isLoading = false;
 
-  constructor(private router: ActivatedRoute, private api: ApiService, private auth: AuthService) {
-    this.api.startLoading();
-    this.api.getCurrentBookInfo(this.router.snapshot.params.id)
-      .subscribe(bookInfo => {
-        this.activeBook = bookInfo;
-        this.api.stopLoading();
-      }, () => {
-        this.auth.logout();
-        this.api.stopLoading();
-      });
-
-    this.api.isLoading$.subscribe(isLoading => this.isLoading = isLoading);
+  constructor(public router: ActivatedRoute, public api: ApiService, public loader: LoaderService, private auth: AuthService) {
   }
 
-  ngOnInit(): void {
+  ngOnInit() {
+    this.subscription = this.router.data.subscribe(book => {
+      this.activeBook = book.book;
+    }, () => {
+      this.auth.logout();
+    })
   }
 
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 }

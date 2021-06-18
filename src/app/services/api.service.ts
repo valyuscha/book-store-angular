@@ -1,44 +1,36 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {IDefaultBook, IUser} from 'interfaces';
-import {BehaviorSubject} from 'rxjs';
+import {LoaderService} from './loader.service';
+import {tap} from 'rxjs/operators';
+import {AuthService} from './auth.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  private _isLoading$ = new BehaviorSubject<boolean>(false);
-
-  constructor(private http: HttpClient) {
-  }
-
-  get isLoading$(): BehaviorSubject<boolean> {
-    return this._isLoading$;
-  }
-
-  startLoading() {
-    this._isLoading$.next(true);
-  }
-
-  stopLoading() {
-    this._isLoading$.next(false);
+  constructor(private http: HttpClient, private loader: LoaderService) {
   }
 
   login(userName: string) {
+    this.loader.startLoading();
     const userData: { username: string } = {
       username: userName
     };
     return this.http.post<IUser>(
       'https://js-band-store-api.glitch.me/signin',
       userData
-    )
+    ).pipe(tap(() => {
+      this.loader.stopLoading();
+    }));
   }
 
   getAllBooks() {
+    this.loader.startLoading();
     const userInfo = localStorage.getItem('userInfo');
     let token = '';
     if (userInfo) {
-      token =  JSON.parse(userInfo).token
+      token =  JSON.parse(userInfo).token;
     }
 
     return this.http.get<IDefaultBook[]>(
@@ -46,14 +38,15 @@ export class ApiService {
       {
         headers: new HttpHeaders({"Authorization": `Bearer ${token}`})
       }
-    )
+    ).pipe(tap(() => this.loader.stopLoading()));
   }
 
   getCurrentBookInfo(bookId: number) {
+    this.loader.startLoading();
     const userInfo = localStorage.getItem('userInfo');
     let token = '';
     if (userInfo) {
-      token =  JSON.parse(userInfo).token
+      token = JSON.parse(userInfo).token;
     }
 
     return this.http.get<IDefaultBook>(
@@ -61,6 +54,6 @@ export class ApiService {
       {
         headers: new HttpHeaders({"Authorization": `Bearer ${token}`})
       }
-    )
+    ).pipe(tap(() => this.loader.stopLoading()));
   }
 }

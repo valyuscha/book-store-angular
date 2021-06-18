@@ -1,17 +1,20 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ICartBook, IDefaultBook} from 'interfaces';
 import {AddRemoveBookFromCartAction} from 'globalTypes';
 import {disableAddingNewBooksIfThereISNoCurrentBooks} from './disableAddingNewBooks';
 import {CartService} from 'services';
 import {getChangedBooksCount} from './getChangedBooksCount';
 import {countTotalPriceOfSameBooks} from 'utils';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-book-price-count-info',
   templateUrl: './book-price-count-info.component.html',
   styleUrls: ['./book-price-count-info.component.scss']
 })
-export class BookPriceCountInfoComponent implements OnInit {
+export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
+  private subscription = new Subscription();
+
   @Input() activeBook: IDefaultBook = {
     id: '',
     count: 0,
@@ -31,10 +34,10 @@ export class BookPriceCountInfoComponent implements OnInit {
   canDecreaseBooksAmount = false;
 
   constructor(private cart: CartService) {
-    this.cart.books$.subscribe(books => this.addedBooks = books);
   }
 
   ngOnInit() {
+    this.subscription = this.cart.books$.subscribe(books => this.addedBooks = books);
     this.totalPrice = this.activeBook.price;
 
     disableAddingNewBooksIfThereISNoCurrentBooks(
@@ -101,5 +104,9 @@ export class BookPriceCountInfoComponent implements OnInit {
 
       this.canDecreaseBooksAmount = false;
     }
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

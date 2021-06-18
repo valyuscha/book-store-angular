@@ -6,13 +6,13 @@
     <div *ngIf="auth.isLoggedIn$ | async" class="header__right">
       <div class="profile-logout">
         <button class="logout__button" (click)="modalsService.showConfirmLogoutModal()">
-          <img src="../../assets/images/logoutIcon.svg" alt="" class="logout__button_icon">
+          <img src="assets/images/logoutIcon.svg" alt="" class="logout__button_icon">
         </button>
         <p class="user-name">{{(auth.userInfo$ | async)!.username}}</p>
         <img [src]="(auth.userInfo$ | async)!.avatar" alt="" class="user-avatar">
       </div>
       <div class="cart">
-        <img src="../../assets/images/cartIcon.svg" alt="" class="cart__icon">
+        <img src="assets/images/cartIcon.svg" alt="" class="cart__icon">
         <div class="purchase-amount__wrapper">
           <span class="purchase-amount">
             {{(cart.totalCount$ | async)! <= 9 ? (cart.totalCount$ | async) : '+9'}}

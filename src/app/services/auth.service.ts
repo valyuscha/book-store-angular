@@ -6,6 +6,7 @@ import {map} from 'rxjs/operators';
 import {IUser} from 'interfaces';
 import {ApiService} from './api.service';
 import {CartService} from './cart.service';
+import {LoaderService} from './loader.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,7 @@ export class AuthService implements OnInit {
   private _serverErrorMessage$ = new BehaviorSubject('');
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
 
-  constructor(private router: Router, private api: ApiService, private cart: CartService) {
+  constructor(private router: Router, private api: ApiService, private cart: CartService, private loader: LoaderService) {
     this.setUserInfo();
   }
 
@@ -28,12 +29,12 @@ export class AuthService implements OnInit {
     return this._userInfo$.asObservable();
   }
 
-  get isServerErrorMessageVisible$(): BehaviorSubject<boolean> {
-    return this._isServerErrorMessageVisible$;
+  get isServerErrorMessageVisible$(): Observable<boolean> {
+    return this._isServerErrorMessageVisible$.asObservable();
   }
 
-  get serverErrorMessage$(): BehaviorSubject<string> {
-    return this._serverErrorMessage$;
+  get serverErrorMessage$(): Observable<string> {
+    return this._serverErrorMessage$.asObservable();
   }
 
   ngOnInit() {
@@ -49,19 +50,16 @@ export class AuthService implements OnInit {
   }
 
   login(userName: string) {
-    this.api.startLoading();
     return this.api.login(userName)
       .subscribe(response => {
         localStorage.setItem('userInfo', JSON.stringify(response));
         if (response) {
           this.setUserInfo();
           this.router.navigateByUrl('/catalog');
-          this.api.stopLoading();
         }
       }, error => {
         this._serverErrorMessage$.next(error.message);
         this.showServerErrorMessage();
-        this.api.stopLoading();
       });
   }
 
@@ -70,7 +68,7 @@ export class AuthService implements OnInit {
     localStorage.removeItem('userInfo');
     this.router.navigateByUrl('/login');
     this.cart.clear();
-    this.api.stopLoading();
+    this.loader.stopLoading();
   }
 
   setUserInfo() {

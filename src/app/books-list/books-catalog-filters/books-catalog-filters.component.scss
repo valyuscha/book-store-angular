@@ -84,6 +84,22 @@
   }
 }
 
+.filters-visible-btn {
+  transform: rotate(0);
+}
+
+.filters-not-visible-btn {
+  transform: rotate(-90deg);
+}
+
+.filters-visible-fields {
+  max-height: 500px;
+}
+
+.filters-not-visible-fields {
+  max-height: 0;
+}
+
 @media screen and (min-width: 401px) {
   .filters__open-close-filters-wrapper {
     display: none;

@@ -26,6 +26,12 @@
   }
 }
 
+.input__wrapper {
+  input {
+    padding: 10px 15px;
+  }
+}
+
 .invalid-button {
   background: #80b5e5;
   cursor: not-allowed;
@@ -79,6 +85,22 @@
       cursor: pointer;
     }
   }
+}
+
+.invalid-touched-field {
+  color: #ff0000;
+}
+
+.valid-field {
+  color: #009898;
+}
+
+.server-error-message-visible {
+  transform: translateY(0);
+}
+
+.server-error-message-not-visible {
+  transform: translateY(-100%);
 }
 
 @media screen and (max-width: 650px) {
