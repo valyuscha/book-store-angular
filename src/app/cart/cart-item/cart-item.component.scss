@@ -1,0 +1,173 @@
+.cart-item {
+  &__wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #464646;
+    background: #cccccc;
+    padding: 10px;
+
+    &:last-of-type {
+      border: none;
+    }
+  }
+
+  &__title {
+    max-width: 60%;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    font-size: 18px;
+    color: #464646;
+    font-weight: 700;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__counter_total-price_delete-book_wrapper {
+    width: 20%;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  &__books-counter-wrapper {
+    width: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__increase-decrease-btn {
+    border: none;
+    height: 22px;
+    width: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 12px;
+    }
+  }
+
+  &__books-count {
+    font-size: 16px;
+    margin: 0 5px;
+    font-weight: 600;
+  }
+
+  &__total-price {
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  &__trash-btn {
+    background: none;
+    border: none;
+    height: 20px;
+    cursor: pointer;
+
+    img {
+      width: 18px;
+    }
+  }
+}
+
+@media screen and (max-width: 1150px) {
+  .cart-item {
+    &__counter_total-price_delete-book_wrapper {
+      width: 25%;
+    }
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .cart-item {
+    &__counter_total-price_delete-book_wrapper {
+      width: 30%;
+    }
+  }
+}
+
+@media screen and (max-width: 750px) {
+  .cart-item {
+    &__counter_total-price_delete-book_wrapper {
+      width: 35%;
+    }
+  }
+}
+
+@media screen and (max-width: 650px) {
+  .cart-item {
+    &__title {
+      max-width: 50%;
+    }
+
+    &__counter_total-price_delete-book_wrapper {
+      width: 40%;
+    }
+  }
+}
+
+@media screen and (max-width: 649px) {
+  .cart-item {
+    &__title {
+      font-size: 14px;
+    }
+
+    &__books-count {
+      font-size: 14px;
+    }
+
+    &__total-price {
+      font-size: 14px;
+    }
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .cart-item {
+    &__title {
+      width: 40%;
+    }
+
+    &__counter_total-price_delete-book_wrapper {
+      width: 50%;
+    }
+  }
+}
+
+@media screen and (max-width: 450px) {
+  .cart-item {
+    &__counter_total-price_delete-book_wrapper {
+      width: 55%;
+    }
+
+    &__books-counter-wrapper {
+      width: 80px;
+    }
+  }
+}
+
+@media screen and (max-width: 350px) {
+  .cart-item {
+    &__books-counter-wrapper {
+      width: 65px;
+    }
+
+    &__increase-decrease-btn {
+      width: 18px;
+      height: 18px;
+    }
+
+    &__trash-btn {
+      img {
+        width: 15px;
+      }
+    }
+  }
+}

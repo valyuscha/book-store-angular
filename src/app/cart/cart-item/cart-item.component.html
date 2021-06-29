@@ -1,0 +1,32 @@
+<div class="cart-item__wrapper">
+  <a class="cart-item__title" [routerLink]="'/catalog/' + book.id">
+    {{book.title}}
+  </a>
+  <div class="cart-item__counter_total-price_delete-book_wrapper">
+    <div class="cart-item__books-counter-wrapper">
+      <button
+        class="cart-item__increase-decrease-btn"
+        [ngClass]="{
+          'can-increase-decrease-btn': book.canUserIncreaseBooksCount,
+          'can-not-increase-decrease-btn': !book.canUserIncreaseBooksCount
+        }"
+        (click)="cart.edit(book.id, 'add')">
+        <img src="assets/images/plusIcon.svg" alt="">
+      </button>
+      <p class="cart-item__books-count">{{book.addedCount}}</p>
+      <button
+        class="cart-item__increase-decrease-btn"
+        [ngClass]="{
+          'can-increase-decrease-btn': book.canUserDecreaseBooksCount,
+          'can-not-increase-decrease-btn': !book.canUserDecreaseBooksCount
+        }"
+        (click)="cart.edit(book.id, 'remove')">
+        <img src="assets/images/minusIcon.svg" alt="">
+      </button>
+    </div>
+    <p class="cart-item__total-price">{{book.currentBookTotalPrice}}$</p>
+    <button class="cart-item__trash-btn" (click)="cart.remove(book.id)">
+      <img src="assets/images/trash.svg" alt="">
+    </button>
+  </div>
+</div>

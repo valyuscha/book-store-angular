@@ -30,9 +30,7 @@ export class BookInfoComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscription = this.router.data.subscribe(book => {
       this.activeBook = book.book;
-    }, () => {
-      this.auth.logout();
-    })
+    });
   }
 
   ngOnDestroy() {

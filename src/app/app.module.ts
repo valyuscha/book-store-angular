@@ -18,6 +18,10 @@ import {BookCardComponent} from 'books-list/book-card/book-card.component';
 import {BookPriceCountInfoComponent} from 'book-info/book-price-count-info/book-price-count-info.component';
 import {BooksCatalogFiltersComponent} from './books-list/books-catalog-filters/books-catalog-filters.component';
 import { LoaderComponent } from './loader/loader.component';
+import { AddedBookToCartModalComponent } from './modals/added-book-to-cart-modal/added-book-to-cart-modal.component';
+import { CartComponent } from './cart/cart.component';
+import { CartItemComponent } from './cart/cart-item/cart-item.component';
+import { HttpErrorMessageComponent } from './http-error-message/http-error-message.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +34,11 @@ import { LoaderComponent } from './loader/loader.component';
     BooksCatalogFiltersComponent,
     BookInfoComponent,
     BookPriceCountInfoComponent,
-    LoaderComponent
+    LoaderComponent,
+    AddedBookToCartModalComponent,
+    CartComponent,
+    CartItemComponent,
+    HttpErrorMessageComponent
   ],
   imports: [
     BrowserModule,

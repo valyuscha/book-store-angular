@@ -2,6 +2,13 @@ import {Component} from '@angular/core';
 import {AuthService, LoaderService} from 'services';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
+const errorMessages: {[key: string]: string} = {
+  required: 'Enter your name',
+  whitespace: 'Your name cannot be empty',
+  minlength: 'Name is too short',
+  maxlength: 'Name is too long'
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -30,28 +37,16 @@ export class LoginComponent {
   }
 
   setLoginInputErrorMessage(): string {
-    if (this.signInForm.get('userName')?.errors?.required) {
-      return 'Enter your name';
+    const activeErrors = Object.keys(this.signInForm.get('userName')?.errors || {});
+    if (activeErrors.length === 0) {
+      return 'Error';
     }
 
-    if (this.signInForm.get('userName')?.errors?.whitespace) {
-      return 'Your name cannot be empty';
-    }
-
-    if (this.signInForm.get('userName')?.errors?.minlength) {
-      return 'Name is too short';
-    }
-
-    if (this.signInForm.get('userName')?.errors?.maxlength) {
-      return 'Name is too long';
-    }
-
-    return 'Error'
+    return errorMessages[activeErrors[0]];
   }
 
   onSubmit() {
     if (!this.signInForm.valid) return;
-    this.loader.startLoading();
     this.auth.login(this.signInForm.getRawValue().userName)
     this.signInForm.reset();
   }

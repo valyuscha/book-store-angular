@@ -37,70 +37,12 @@
   cursor: not-allowed;
 }
 
-.server-error-message-block__wrapper {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 40px;
-  background: #ffe2d9;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 0 5%;
-  z-index: 9999;
-  transition: transform .5s;
-
-  .message {
-    &__wrapper {
-      display: flex;
-      align-items: center;
-    }
-
-    &__content {
-      font-size: 14px;
-      color: #ff0000;
-      margin-left: 10px;
-    }
-  }
-
-  .error-icon {
-    width: 15px;
-    height: 15px;
-    margin-top: 2px;
-  }
-
-  .hide-message {
-    &-btn {
-      background: none;
-      border: none;
-      width: 15px;
-      height: 15px;
-      margin-left: 10px;
-    }
-
-    &-icon {
-      width: 15px;
-      height: 15px;
-      cursor: pointer;
-    }
-  }
-}
-
 .invalid-touched-field {
   color: #ff0000;
 }
 
 .valid-field {
   color: #009898;
-}
-
-.server-error-message-visible {
-  transform: translateY(0);
-}
-
-.server-error-message-not-visible {
-  transform: translateY(-100%);
 }
 
 @media screen and (max-width: 650px) {

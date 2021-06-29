@@ -13,12 +13,12 @@ import {LoaderService} from './loader.service';
 })
 export class AuthService implements OnInit {
   private _userInfo$ = new ReplaySubject<IUser>();
-  private _isServerErrorMessageVisible$ = new BehaviorSubject(false);
-  private _serverErrorMessage$ = new BehaviorSubject('');
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
+  static instance: AuthService;
 
   constructor(private router: Router, private api: ApiService, private cart: CartService, private loader: LoaderService) {
     this.setUserInfo();
+    AuthService.instance = this;
   }
 
   get isLoggedIn$(): Observable<boolean> {
@@ -29,24 +29,8 @@ export class AuthService implements OnInit {
     return this._userInfo$.asObservable();
   }
 
-  get isServerErrorMessageVisible$(): Observable<boolean> {
-    return this._isServerErrorMessageVisible$.asObservable();
-  }
-
-  get serverErrorMessage$(): Observable<string> {
-    return this._serverErrorMessage$.asObservable();
-  }
-
   ngOnInit() {
     this.setUserInfo();
-  }
-
-  showServerErrorMessage() {
-    this._isServerErrorMessageVisible$.next(true);
-  }
-
-  hideServerErrorMessage() {
-    this._isServerErrorMessageVisible$.next(false);
   }
 
   login(userName: string) {
@@ -57,9 +41,6 @@ export class AuthService implements OnInit {
           this.setUserInfo();
           this.router.navigateByUrl('/catalog');
         }
-      }, error => {
-        this._serverErrorMessage$.next(error.message);
-        this.showServerErrorMessage();
       });
   }
 

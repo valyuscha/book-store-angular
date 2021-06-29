@@ -1,0 +1,6 @@
+<div *ngIf="modalsService.isAddedBookToCartModalVisible$ | async" class="modal__wrapper">
+  <div class="modal__content-wrapper">
+    <h2 class="modal__message">Book was successfully added to cart</h2>
+    <button class="button" (click)="modalsService.hideAddedBookToCartModal()">Close</button>
+  </div>
+</div>

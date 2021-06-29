@@ -15,6 +15,8 @@ import {
 export class CartService {
   private books: BookInfo = {};
   private _books$ = new BehaviorSubject<BookInfo>({});
+  private _totalPrice$ = new BehaviorSubject<number>(0);
+  private _totalCount$ = new BehaviorSubject<number>(0);
 
   constructor() {
     const storedCart = localStorage.getItem('cart');
@@ -29,13 +31,9 @@ export class CartService {
     }
   }
 
-  private _totalPrice$ = new BehaviorSubject<number>(0);
-
   get totalPrice$(): BehaviorSubject<number> {
     return this._totalPrice$;
   }
-
-  private _totalCount$ = new BehaviorSubject<number>(0);
 
   get totalCount$(): BehaviorSubject<number> {
     return this._totalCount$;
@@ -45,7 +43,7 @@ export class CartService {
     return this._books$.asObservable();
   }
 
-  changeBooksData() {
+  private changeBooksData() {
     const booksValues = Object.values(this.books);
     const changedTotalPrice = countTotalPriceOfAllBooks(booksValues);
     const changedTotalCount = countAllBooks(booksValues);
@@ -105,6 +103,7 @@ export class CartService {
     const booksEntries = Object.entries(this.books);
     const filteredBooks = booksEntries.filter(book => +book[0] !== +bookId);
     this._books$.next(Object.fromEntries(filteredBooks));
+    this.books = Object.fromEntries(filteredBooks);
 
     this.changeBooksData();
   }
@@ -119,10 +118,10 @@ export class CartService {
     bookInfo.currentBookTotalPrice = countTotalPriceOfSameBooks(bookInfo.price, changedBooksDuplicatesAmount);
 
     const filteredBooksEntries = Object.entries(this.books)
-      .filter(book => +book[0] !== +bookInfo.id);
+      .filter(book => book[0] !== bookInfo.id);
     const filteredBooks = Object.fromEntries(filteredBooksEntries);
     const newBook = {[bookInfo.id]: bookInfo};
-
+    this.books = {...filteredBooks, ...newBook};
     this._books$.next({...filteredBooks, ...newBook});
 
     this.changeBooksData();

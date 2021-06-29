@@ -24,6 +24,7 @@ button {
 }
 
 .input {
+  order: 2;
   width: 100%;
   font-size: 14px;
   border-radius: 10px;
@@ -36,6 +37,8 @@ button {
 
   &__wrapper {
     position: relative;
+    display: flex;
+    flex-direction: column;
 
     .search-icon {
       width: 17px;
@@ -51,6 +54,11 @@ button {
       margin: 5px 5px 0 0;
       text-align: right;
       visibility: hidden;
+      order: 3;
+    }
+
+    input.ng-touched.ng-invalid ~ label {
+      color: red;
     }
 
     input.ng-touched.ng-invalid ~ .error-message {
@@ -63,6 +71,7 @@ button {
     font-size: 15px;
     margin: 0 0 10px 5px;
     color: #009898;
+    order: 1;
   }
 }
 
@@ -105,8 +114,22 @@ button {
   }
 }
 
+//.input__label-field-wrapper:has( > input.ng-touched.ng-invalid) ~ .error-message {
+//  visibility: visible;
+//}
+
 input.ng-touched.ng-invalid {
   border: 2px solid #ff0000;
+}
+
+.can-increase-decrease-btn {
+  background: #009898;
+  cursor: pointer;
+}
+
+.can-not-increase-decrease-btn {
+  background: #464646;
+  cursor: not-allowed;
 }
 
 app-book-card {

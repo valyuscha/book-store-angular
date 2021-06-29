@@ -2,7 +2,7 @@ import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ICartBook, IDefaultBook} from 'interfaces';
 import {AddRemoveBookFromCartAction} from 'globalTypes';
 import {disableAddingNewBooksIfThereISNoCurrentBooks} from './disableAddingNewBooks';
-import {CartService} from 'services';
+import {CartService, ModalsService} from 'services';
 import {getChangedBooksCount} from './getChangedBooksCount';
 import {countTotalPriceOfSameBooks} from 'utils';
 import {Subscription} from 'rxjs';
@@ -33,7 +33,7 @@ export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
   canIncreaseBooksAmount = true;
   canDecreaseBooksAmount = false;
 
-  constructor(private cart: CartService) {
+  constructor(private cart: CartService, private modals: ModalsService) {
   }
 
   ngOnInit() {
@@ -91,6 +91,7 @@ export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
 
   addNewBookToCart() {
     if (this.booksCount) {
+      this.modals.showAddedBookToCartModal();
       this.cart.add(this.activeBook, this.booksCount, this.totalPrice);
       this.booksCount = 1;
 

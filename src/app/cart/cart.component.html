@@ -1,0 +1,19 @@
+<div class="cart-view__wrapper">
+  <ng-container *ngIf="books.length">
+    <button class="button cart-view__purchase-btn">Purchase</button>
+    <div class="cart-view__books-wrapper">
+      <app-cart-item *ngFor="let book of books" [allBooks]="books" [book]="book"></app-cart-item>
+    </div>
+    <div class="cart-view__empty-trash_total-count-price_wrapper">
+      <button class="button cart-view__empty-trash-btn">
+        Empty Trash
+      </button>
+      <div class="cart-view__total-count-price_wrapper">
+        <p>Total count: {{cart.totalCount$ | async}}</p>
+        <p>Total price: {{cart.totalPrice$ | async}}$</p>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<app-http-error-message></app-http-error-message>

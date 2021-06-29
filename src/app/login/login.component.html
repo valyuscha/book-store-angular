@@ -3,24 +3,16 @@
     <h2 class="login__title">Welcome to JS Band Store</h2>
     <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">
       <div class="input__wrapper">
-        <label
-          for="input"
-          class="input__label"
-          [ngClass]="{
-            'invalid-touched-field': !signInForm.get('userName')?.valid && signInForm.get('userName')?.touched,
-            'valid-field': signInForm.get('userName')?.valid && signInForm.get('userName')?.touched
-              || !signInForm.get('userName')?.valid && !signInForm.get('userName')?.touched
-            }">
-          Name
-        </label>
         <input
           id="input"
           class="input"
           type="text"
           formControlName="userName"
           placeholder="John Adams">
+        <label for="input" class="input__label">Name</label>
         <p class="error-message">{{setLoginInputErrorMessage()}}</p>
       </div>
+
       <div class="submit-button">
         <button class="button" [class.invalid-button]="!signInForm.valid">
           Log in
@@ -32,17 +24,4 @@
 
 <app-loader></app-loader>
 
-<div
-  [ngClass]="{
-    'server-error-message-visible': auth.isServerErrorMessageVisible$ | async,
-    'server-error-message-not-visible': !(auth.isServerErrorMessageVisible$ | async)
-  }"
-  class="server-error-message-block__wrapper">
-  <div class="message__wrapper">
-    <img src="assets/images/error-icon.svg" alt="" class="error-icon">
-    <p class="message__content">Ooooops. Something went wrong. Try again a little bit later.</p>
-  </div>
-  <button class="hide-message-btn" (click)="auth.hideServerErrorMessage()">
-    <img src="assets/images/hide-error-message.svg" alt="" class="hide-message-icon">
-  </button>
-</div>
+<app-http-error-message></app-http-error-message>
