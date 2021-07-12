@@ -12,7 +12,12 @@
         <img [src]="(auth.userInfo$ | async)!.avatar" alt="" class="user-avatar">
       </div>
       <div class="cart">
-        <img src="assets/images/cartIcon.svg" alt="" class="cart__icon" routerLink="/cart">
+        <div class="cart__icon">
+          <svg-icon
+            src="assets/images/cartIcon.svg"
+            [svgStyle]="{'fill': '#fff'}"
+            routerLink="/cart"></svg-icon>
+        </div>
         <div class="purchase-amount__wrapper" routerLink="/cart">
           <span class="purchase-amount">
             {{(cart.totalCount$ | async)! <= 9 ? (cart.totalCount$ | async) : '+9'}}

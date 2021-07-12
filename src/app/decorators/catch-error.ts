@@ -11,7 +11,6 @@ export function CatchError(target: any, propName: string | Symbol, descriptor: P
         if (err.status === 401) {
           AuthService.instance.logout();
         } else {
-          LoaderService.instance.stopLoading();
           ServerErrorMessageService.instance.showServerErrorMessage();
         }
 

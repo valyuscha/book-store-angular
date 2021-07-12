@@ -13,7 +13,7 @@ export class CartComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();
   books: ICartBook[] = [];
 
-  constructor(public loader: LoaderService, public cart: CartService, private router: ActivatedRoute, private auth: AuthService) {
+  constructor(public loader: LoaderService, public cart: CartService) {
   }
 
   ngOnInit() {

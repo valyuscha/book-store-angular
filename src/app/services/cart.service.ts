@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {BehaviorSubject, Observable} from 'rxjs';
 import {AddRemoveBookFromCartAction, BookInfo} from 'globalTypes';
 import {ICartBook, IDefaultBook} from 'interfaces';
+import {ApiService} from './api.service';
 import {
   chooseBooksAmount,
   countAllBooks,
@@ -18,7 +19,7 @@ export class CartService {
   private _totalPrice$ = new BehaviorSubject<number>(0);
   private _totalCount$ = new BehaviorSubject<number>(0);
 
-  constructor() {
+  constructor(private api: ApiService) {
     const storedCart = localStorage.getItem('cart');
     if (storedCart) {
       const cart = JSON.parse(storedCart);
@@ -134,5 +135,17 @@ export class CartService {
     this._totalCount$.next(0);
 
     localStorage.setItem('cart', JSON.stringify({books: {}, totalPrice: 0, totalCount: 0}));
+  }
+
+  purchase() {
+    const books: ICartBook[] = Object.entries(this.books).map(book => {
+      const bookInfo = {...book[1]};
+      bookInfo.id = book[0];
+      return bookInfo;
+    })
+
+    this.api.purchase(books).subscribe(res => {
+      console.log('Response', res);
+    })
   }
 }

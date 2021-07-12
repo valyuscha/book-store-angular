@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {IDefaultBook, IUser} from 'interfaces';
+import {ICartBook, IDefaultBook, IUser} from 'interfaces';
 import {CatchError, SwitchLoader} from 'decorators';
 
 @Injectable({
@@ -50,6 +50,28 @@ export class ApiService {
 
     return this.http.get<IDefaultBook>(
       `https://js-band-store-api.glitch.me/books/${bookId}`,
+      {
+        headers: new HttpHeaders({'Authorization': `Bearer ${token}`})
+      }
+    );
+  }
+
+  @CatchError
+  @SwitchLoader
+  purchase(booksList: ICartBook[]) {
+    const purchaseData = {
+      books: booksList
+    };
+
+    const userInfo = localStorage.getItem('userInfo');
+    let token = '';
+    if (userInfo) {
+      token = JSON.parse(userInfo).token;
+    }
+
+    return this.http.post(
+      'https://js-band-store-api.glitch.me/books/purchase',
+      JSON.stringify(purchaseData),
       {
         headers: new HttpHeaders({'Authorization': `Bearer ${token}`})
       }

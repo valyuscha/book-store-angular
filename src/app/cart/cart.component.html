@@ -1,11 +1,42 @@
-<div class="cart-view__wrapper">
+<div *ngIf="!(loader.isLoading$ | async)" class="cart-view__wrapper">
   <ng-container *ngIf="books.length">
-    <button class="button cart-view__purchase-btn">Purchase</button>
+    <button class="button cart-view__purchase-btn" (click)="cart.purchase()">Purchase</button>
     <div class="cart-view__books-wrapper">
-      <app-cart-item *ngFor="let book of books" [allBooks]="books" [book]="book"></app-cart-item>
+      <div *ngFor="let book of books" class="cart-item__wrapper">
+        <a class="cart-item__title" [routerLink]="'/catalog/' + book.id">
+          {{book.title}}
+        </a>
+        <div class="cart-item__counter_total-price_delete-book_wrapper">
+          <div class="cart-item__books-counter-wrapper">
+            <button
+              class="cart-item__increase-decrease-btn"
+              [ngClass]="{
+                'can-increase-decrease-btn': book.canUserIncreaseBooksCount,
+                'can-not-increase-decrease-btn': !book.canUserIncreaseBooksCount
+              }"
+              (click)="cart.edit(book.id, 'add')">
+              <img src="assets/images/plusIcon.svg" alt="">
+            </button>
+            <p class="cart-item__books-count">{{book.addedCount}}</p>
+            <button
+              class="cart-item__increase-decrease-btn"
+              [ngClass]="{
+                'can-increase-decrease-btn': book.canUserDecreaseBooksCount,
+                'can-not-increase-decrease-btn': !book.canUserDecreaseBooksCount
+              }"
+              (click)="cart.edit(book.id, 'remove')">
+              <img src="assets/images/minusIcon.svg" alt="">
+            </button>
+          </div>
+          <p class="cart-item__total-price">{{book.currentBookTotalPrice}}$</p>
+          <button class="cart-item__trash-btn" (click)="cart.remove(book.id)">
+            <img src="assets/images/trash.svg" alt="">
+          </button>
+        </div>
+      </div>
     </div>
     <div class="cart-view__empty-trash_total-count-price_wrapper">
-      <button class="button cart-view__empty-trash-btn">
+      <button class="button cart-view__empty-trash-btn" (click)="cart.clear()">
         Empty Trash
       </button>
       <div class="cart-view__total-count-price_wrapper">
@@ -14,6 +45,14 @@
       </div>
     </div>
   </ng-container>
+  <div *ngIf="!books.length" class="empty-cart-block__wrapper">
+    <svg-icon
+      src="assets/images/cartIcon.svg"
+      [svgStyle]="{'fill': '#464646', 'width.px': 40}"></svg-icon>
+    <p>The cart is empty...</p>
+  </div>
 </div>
+
+<app-loader></app-loader>
 
 <app-http-error-message></app-http-error-message>
