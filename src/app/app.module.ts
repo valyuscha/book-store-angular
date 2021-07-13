@@ -2,7 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {SpinnerInfinityModule} from 'spinners-angular/spinner-infinity';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
@@ -21,6 +21,7 @@ import {BooksCatalogFiltersComponent} from './books-list/books-catalog-filters/b
 import { LoaderComponent } from './loader/loader.component';
 import { CartComponent } from './cart/cart.component';
 import { HttpErrorMessageComponent } from './http-error-message/http-error-message.component';
+import {AuthInterceptor} from './interceptors/auth.interceptor';
 
 @NgModule({
   declarations: [
@@ -47,7 +48,16 @@ import { HttpErrorMessageComponent } from './http-error-message/http-error-messa
     RouterModule.forRoot(routes),
     AngularSvgIconModule.forRoot()
   ],
-  providers: [GuardIfUserLoggedIn, GuardIfUserNotLoggedIn, AuthService],
+  providers: [
+    GuardIfUserLoggedIn,
+    GuardIfUserNotLoggedIn,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

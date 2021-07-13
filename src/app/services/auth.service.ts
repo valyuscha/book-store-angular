@@ -7,6 +7,7 @@ import {IUser} from 'interfaces';
 import {ApiService} from './api.service';
 import {CartService} from './cart.service';
 import {LoaderService} from './loader.service';
+import {LocalStorageService} from './local-storage.service';
 
 @Injectable({
   providedIn: 'root'
@@ -16,7 +17,13 @@ export class AuthService implements OnInit {
   private _isLoggedIn$ = new BehaviorSubject<boolean>(false);
   static instance: AuthService;
 
-  constructor(private router: Router, private api: ApiService, private cart: CartService, private loader: LoaderService) {
+  constructor(
+    private router: Router,
+    private api: ApiService,
+    private cart: CartService,
+    private loader: LoaderService,
+    private localStorage: LocalStorageService
+  ) {
     this.setUserInfo();
     AuthService.instance = this;
   }
@@ -36,7 +43,7 @@ export class AuthService implements OnInit {
   login(userName: string) {
     return this.api.login(userName)
       .subscribe(response => {
-        localStorage.setItem('userInfo', JSON.stringify(response));
+        this.localStorage.set('userInfo', response)
         if (response) {
           this.setUserInfo();
           this.router.navigateByUrl('/catalog');
@@ -46,17 +53,17 @@ export class AuthService implements OnInit {
 
   logout() {
     this._isLoggedIn$.next(false);
-    localStorage.removeItem('userInfo');
+    this.localStorage.remove('userInfo');
     this.router.navigateByUrl('/login');
     this.cart.clear();
     this.loader.stopLoading();
   }
 
   setUserInfo() {
-    const userInfo = localStorage.getItem('userInfo');
+    const userInfo = this.localStorage.getObject<IUser>('userInfo');
 
     if (userInfo) {
-      this._userInfo$.next(JSON.parse(userInfo));
+      this._userInfo$.next(userInfo);
       this._isLoggedIn$.next(!!this._userInfo$.pipe(map(userInfo => !!userInfo.token)));
     }
   }

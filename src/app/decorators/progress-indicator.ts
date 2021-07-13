@@ -2,7 +2,7 @@ import {LoaderService} from 'services';
 import {Observable} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
 
-export function SwitchLoader(target: any, propName: string | Symbol, descriptor: PropertyDescriptor) {
+export function ProgressIndicator(target: any, propName: string | Symbol, descriptor: PropertyDescriptor) {
   const oldMethod = descriptor.value;
   descriptor.value = function (...args:any[]) {
     LoaderService.instance.startLoading();

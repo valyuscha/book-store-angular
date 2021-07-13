@@ -1,2 +1,2 @@
-export * from './switch-loader'
+export * from './progress-indicator'
 export * from './catch-error'
