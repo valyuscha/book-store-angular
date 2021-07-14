@@ -1,13 +1,13 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AuthService, CartService, LoaderService} from 'services';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
+import {CartService, LoaderService} from 'services';
 import {Subscription} from 'rxjs';
-import {ICartBook} from '../interfaces';
-import {ActivatedRoute} from '@angular/router';
+import {ICartBook} from 'interfaces';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss']
+  styleUrls: ['./cart.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

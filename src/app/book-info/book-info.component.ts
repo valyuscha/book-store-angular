@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {ApiService, AuthService, LoaderService} from 'services';
 import {IDefaultBook} from '../interfaces';
@@ -7,7 +7,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-book-info',
   templateUrl: './book-info.component.html',
-  styleUrls: ['./book-info.component.scss']
+  styleUrls: ['./book-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookInfoComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

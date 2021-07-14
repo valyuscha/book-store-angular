@@ -1,10 +1,11 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ServerErrorMessageService} from 'services';
 
 @Component({
   selector: 'app-http-error-message',
   templateUrl: './http-error-message.component.html',
-  styleUrls: ['./http-error-message.component.scss']
+  styleUrls: ['./http-error-message.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HttpErrorMessageComponent {
   constructor(public serverError: ServerErrorMessageService) {

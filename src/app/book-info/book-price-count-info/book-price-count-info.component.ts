@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ICartBook, IDefaultBook} from 'interfaces';
 import {AddRemoveBookFromCartAction} from 'globalTypes';
 import {disableAddingNewBooksIfThereISNoCurrentBooks} from './disableAddingNewBooks';
@@ -10,7 +10,8 @@ import {Subscription} from 'rxjs';
 @Component({
   selector: 'app-book-price-count-info',
   templateUrl: './book-price-count-info.component.html',
-  styleUrls: ['./book-price-count-info.component.scss']
+  styleUrls: ['./book-price-count-info.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
   private subscription = new Subscription();

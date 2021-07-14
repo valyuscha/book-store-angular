@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {IDefaultBook} from 'interfaces';
-import {BehaviorSubject} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {ApiService} from './api.service';
+import {tap} from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -21,11 +22,11 @@ export class BooksService {
     return this._booksForRender$;
   }
 
-  loadBooks() {
-    this.api.getAllBooks().subscribe(books => {
+  loadBooks(): Observable<unknown> {
+    return this.api.getAllBooks().pipe(tap(books => {
       this._allBooks = books;
       this._booksForRender$.next(books);
-    });
+    }));
   }
 
   setBooksForRender(books: IDefaultBook[]) {

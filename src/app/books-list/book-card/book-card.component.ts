@@ -1,10 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input} from '@angular/core';
 import {IDefaultBook} from 'interfaces';
 
 @Component({
   selector: 'app-book-card',
   templateUrl: './book-card.component.html',
-  styleUrls: ['./book-card.component.scss']
+  styleUrls: ['./book-card.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookCardComponent {
   @Input() book: IDefaultBook = {

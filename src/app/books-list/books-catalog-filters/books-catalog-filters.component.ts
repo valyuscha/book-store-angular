@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {BooksService} from 'services';
 import {filterBooksByPrice} from './filterBooksByPrice';
 import {filterBooksByName} from './filterBooksByName';
@@ -6,7 +6,8 @@ import {filterBooksByName} from './filterBooksByName';
 @Component({
   selector: 'app-books-catalog-filters',
   templateUrl: './books-catalog-filters.component.html',
-  styleUrls: ['./books-catalog-filters.component.scss']
+  styleUrls: ['./books-catalog-filters.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BooksCatalogFiltersComponent {
   areFiltersVisible: boolean = window.innerWidth > 400;

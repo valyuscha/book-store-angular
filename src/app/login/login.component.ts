@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {AuthService, LoaderService} from 'services';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
 
@@ -12,7 +12,8 @@ const errorMessages: {[key: string]: string} = {
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  styleUrls: ['./login.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
   signInForm: FormGroup;
