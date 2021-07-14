@@ -26,6 +26,10 @@ export class CartComponent implements OnInit, OnDestroy {
     })
   }
 
+  trackByFn(index: string | number) {
+    return index;
+  }
+
   ngOnDestroy() {
     this.subscription.unsubscribe();
   }

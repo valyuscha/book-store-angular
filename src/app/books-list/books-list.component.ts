@@ -9,4 +9,8 @@ import {ApiService, BooksService, LoaderService} from 'services';
 export class BooksListComponent {
   constructor(public api: ApiService, public loader: LoaderService, public books: BooksService) {
   }
+
+  trackByFn(index: string | number) {
+    return index;
+  }
 }

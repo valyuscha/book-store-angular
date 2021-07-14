@@ -11,10 +11,6 @@ export class BooksService {
   private _allBooks: IDefaultBook[] = [];
 
   constructor(private api: ApiService) {
-    this.api.getAllBooks().subscribe(books => {
-      this._allBooks = books;
-      this._booksForRender$.next(books);
-    });
   }
 
   get allBooks(): IDefaultBook[] {
@@ -23,6 +19,13 @@ export class BooksService {
 
   get booksForRender$(): BehaviorSubject<IDefaultBook[]> {
     return this._booksForRender$;
+  }
+
+  loadBooks() {
+    this.api.getAllBooks().subscribe(books => {
+      this._allBooks = books;
+      this._booksForRender$.next(books);
+    });
   }
 
   setBooksForRender(books: IDefaultBook[]) {

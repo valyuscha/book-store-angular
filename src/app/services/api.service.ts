@@ -2,36 +2,37 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ICartBook, IDefaultBook, IUser} from 'interfaces';
 import {ProgressIndicator} from 'decorators';
+import {GlobalDataService} from './global-data.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private globalData: GlobalDataService) {
   }
 
   @ProgressIndicator
   login(userName: string) {
     return this.http.post<IUser>(
-      'https://js-band-store-api.glitch.me/signin',
+      `${this.globalData.apiHost}/signin`,
       {username: userName}
     );
   }
 
   @ProgressIndicator
   getAllBooks() {
-    return this.http.get<IDefaultBook[]>('https://js-band-store-api.glitch.me/books');
+    return this.http.get<IDefaultBook[]>(`${this.globalData.apiHost}/books`);
   }
 
   @ProgressIndicator
   getCurrentBookInfo(bookId: number) {
-    return this.http.get<IDefaultBook>(`https://js-band-store-api.glitch.me/books/${bookId}`);
+    return this.http.get<IDefaultBook>(`${this.globalData.apiHost}/books/${bookId}`);
   }
 
   @ProgressIndicator
   purchase(booksList: ICartBook[]) {
     return this.http.post(
-      'https://js-band-store-api.glitch.me/books/purchase',
+      `${this.globalData.apiHost}/books/purchase`,
       JSON.stringify({books: booksList})
     );
   }

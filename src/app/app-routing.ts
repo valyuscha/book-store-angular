@@ -5,12 +5,12 @@ import {BooksListComponent} from 'books-list/books-list.component';
 import {BookInfoComponent} from 'book-info/book-info.component';
 import {BookInfoResolver} from './resolvers/book-info.resolver';
 import {CartComponent} from './cart/cart.component';
-import {AllBooksResolver} from './resolvers/all-books.resolver';
+import {GuardGetAllBooksGuard} from './guards/guard-get-all-books.guard';
 
 export const routes: Routes = [
   {path: '', redirectTo: '/catalog', pathMatch: 'full'},
   {path: 'login', component: LoginComponent, canActivate: [GuardIfUserNotLoggedIn]},
-  {path: 'catalog', component: BooksListComponent, canActivate: [GuardIfUserLoggedIn]},
+  {path: 'catalog', component: BooksListComponent, canActivate: [GuardIfUserLoggedIn, GuardGetAllBooksGuard]},
   {path: 'catalog/:id', component: BookInfoComponent, canActivate: [GuardIfUserLoggedIn], resolve: {book: BookInfoResolver}},
-  {path: 'cart', component: CartComponent, canActivate: [GuardIfUserLoggedIn], resolve: {allBooks: AllBooksResolver}}
+  {path: 'cart', component: CartComponent, canActivate: [GuardIfUserLoggedIn]}
 ];

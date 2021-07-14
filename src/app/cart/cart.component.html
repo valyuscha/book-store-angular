@@ -2,7 +2,7 @@
   <ng-container *ngIf="books.length">
     <button class="button cart-view__purchase-btn" (click)="cart.purchase()">Purchase</button>
     <div class="cart-view__books-wrapper">
-      <div *ngFor="let book of books" class="cart-item__wrapper">
+      <div *ngFor="let book of books; trackBy: trackByFn" class="cart-item__wrapper">
         <a class="cart-item__title" [routerLink]="'/catalog/' + book.id">
           {{book.title}}
         </a>
@@ -52,7 +52,3 @@
     <p>The cart is empty...</p>
   </div>
 </div>
-
-<app-loader></app-loader>
-
-<app-http-error-message></app-http-error-message>

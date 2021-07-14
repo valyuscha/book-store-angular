@@ -2,7 +2,7 @@
   <ng-container *ngIf="(books.booksForRender$ | async) as booksForRender">
     <app-books-catalog-filters></app-books-catalog-filters>
     <div *ngIf="booksForRender.length" class="books-wrapper">
-      <app-book-card *ngFor="let book of booksForRender" [book]="book"></app-book-card>
+      <app-book-card *ngFor="let book of booksForRender; trackBy: trackByFn" [book]="book"></app-book-card>
     </div>
     <div *ngIf="!booksForRender.length" class="no-books__wrapper">
       <img src="assets/images/bookIcon.svg" alt="">
@@ -10,9 +10,3 @@
     </div>
   </ng-container>
 </div>
-
-<app-loader></app-loader>
-
-<app-confirm-logout-modal></app-confirm-logout-modal>
-
-<app-http-error-message></app-http-error-message>
