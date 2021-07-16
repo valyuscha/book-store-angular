@@ -1,4 +1,10 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewRef
+} from '@angular/core';
 import {LoaderService} from 'services';
 
 @Component({
@@ -10,10 +16,19 @@ import {LoaderService} from 'services';
 export class LoaderComponent implements OnInit {
   isLoading = false;
 
-  constructor(public loader: LoaderService) {
+  constructor(public loader: LoaderService, private cdRef: ChangeDetectorRef) {
   }
 
   ngOnInit() {
-    this.loader.isLoading$.subscribe(isLoading => this.isLoading = isLoading);
+    this.loader.isLoading$.subscribe(isLoading => {
+      this.isLoading = isLoading;
+      this.detectChanges();
+    });
+  }
+
+  private detectChanges() {
+    if (!(this.cdRef as ViewRef).destroyed) {
+      this.cdRef.detectChanges();
+    }
   }
 }
