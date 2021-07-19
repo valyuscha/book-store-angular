@@ -3,6 +3,8 @@ import {RouterModule} from '@angular/router';
 import {BrowserModule} from '@angular/platform-browser';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {NgxsModule} from '@ngxs/store';
+import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {SpinnerInfinityModule} from 'spinners-angular/spinner-infinity';
 import {AngularSvgIconModule} from 'angular-svg-icon';
 
@@ -46,7 +48,9 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
     HttpClientModule,
     SpinnerInfinityModule,
     RouterModule.forRoot(routes),
-    AngularSvgIconModule.forRoot()
+    AngularSvgIconModule.forRoot(),
+    NgxsModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [
     GuardIfUserLoggedIn,

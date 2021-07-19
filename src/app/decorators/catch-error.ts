@@ -8,7 +8,6 @@ export function CatchError(target: any, propName: string | Symbol, descriptor: P
     const result = oldMethod.apply(this, args) as Observable<any>;
     return result.pipe(
       catchError(err => {
-        console.log(err.status);
         if (err.status === 401) {
           AuthService.instance.logout();
         } else {
