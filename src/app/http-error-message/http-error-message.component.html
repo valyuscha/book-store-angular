@@ -1,14 +1,14 @@
 <div
   [ngClass]="{
-    'server-error-message-visible': serverError.isServerErrorMessageVisible$ | async,
-    'server-error-message-not-visible': !(serverError.isServerErrorMessageVisible$ | async)
+    'server-error-message-visible': isVisible | async,
+    'server-error-message-not-visible': !(isVisible | async)
   }"
   class="server-error-message-block__wrapper">
   <div class="message__wrapper">
     <img src="assets/images/error-icon.svg" alt="" class="error-icon">
     <p class="message__content">Ooooops. Something went wrong. Try again a little bit later.</p>
   </div>
-  <button class="hide-message-btn" (click)="serverError.hideServerErrorMessage()">
+  <button class="hide-message-btn" (click)="hideErrorMessage()">
     <img src="assets/images/hide-error-message.svg" alt="" class="hide-message-icon">
   </button>
 </div>

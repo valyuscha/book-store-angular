@@ -3,13 +3,13 @@
     <div class="header__left">
       <h1 class="logo" routerLink="/catalog">JS Band Store</h1>
     </div>
-    <div *ngIf="auth.isLoggedIn$ | async" class="header__right">
+    <div *ngIf="isLoggedIn | async" class="header__right">
       <div class="profile-logout">
         <button class="logout__button" (click)="modalsService.showConfirmLogoutModal()">
           <img src="assets/images/logoutIcon.svg" alt="" class="logout__button_icon">
         </button>
-        <p class="user-name">{{(auth.userInfo$ | async)!.username}}</p>
-        <img [src]="(auth.userInfo$ | async)!.avatar" alt="" class="user-avatar">
+        <p class="user-name">{{(userInfo | async)!.username}}</p>
+        <img [src]="(userInfo | async)!.avatar" alt="" class="user-avatar">
       </div>
       <div class="cart">
         <div class="cart__icon">

@@ -1,5 +1,8 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {ApiService, BooksService, LoaderService} from 'services';
+import {ApiService, BooksService} from 'services';
+import {Select} from '@ngxs/store';
+import {LoaderState} from '../state/loader.state';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-books-list',
@@ -8,7 +11,9 @@ import {ApiService, BooksService, LoaderService} from 'services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BooksListComponent {
-  constructor(public api: ApiService, public loader: LoaderService, public books: BooksService) {
+  @Select(LoaderState.getIsLoadingStatus) isLoading!: Observable<boolean>;
+
+  constructor(public api: ApiService, public books: BooksService) {
   }
 
   trackByFn(index: string | number) {

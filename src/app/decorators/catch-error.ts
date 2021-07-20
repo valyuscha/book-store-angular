@@ -1,6 +1,7 @@
 import {catchError} from 'rxjs/operators';
-import {AuthService, ServerErrorMessageService} from 'services';
+import {DecoratorStoreService} from 'services';
 import {Observable} from 'rxjs';
+import {Logout, ShowServerErrorMessage} from 'actions';
 
 export function CatchError(target: any, propName: string | Symbol, descriptor: PropertyDescriptor) {
   const oldMethod = descriptor.value;
@@ -9,9 +10,9 @@ export function CatchError(target: any, propName: string | Symbol, descriptor: P
     return result.pipe(
       catchError(err => {
         if (err.status === 401) {
-          AuthService.instance.logout();
+          DecoratorStoreService.instance.dispatch(new Logout());
         } else {
-          ServerErrorMessageService.instance.showServerErrorMessage();
+          DecoratorStoreService.instance.dispatch(new ShowServerErrorMessage());
         }
 
         return err;

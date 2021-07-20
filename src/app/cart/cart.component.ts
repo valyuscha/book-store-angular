@@ -1,7 +1,9 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {CartService, LoaderService} from 'services';
-import {Subscription} from 'rxjs';
+import {CartService} from 'services';
+import {Observable, Subscription} from 'rxjs';
 import {ICartBook} from 'interfaces';
+import {Select} from '@ngxs/store';
+import {LoaderState} from '../state/loader.state';
 
 @Component({
   selector: 'app-cart',
@@ -10,10 +12,11 @@ import {ICartBook} from 'interfaces';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class CartComponent implements OnInit, OnDestroy {
+  @Select(LoaderState.getIsLoadingStatus) isLoading!: Observable<boolean>;
   private subscription = new Subscription();
   books: ICartBook[] = [];
 
-  constructor(public loader: LoaderService, public cart: CartService) {
+  constructor(public cart: CartService) {
   }
 
   ngOnInit() {

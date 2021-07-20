@@ -1,16 +1,17 @@
-import {LoaderService} from 'services';
 import {Observable} from 'rxjs';
 import {catchError, tap} from 'rxjs/operators';
+import {HideLoader, ShowLoader} from '../actions/loader.actions';
+import {DecoratorStoreService} from '../services/decorator-store.service';
 
 export function ProgressIndicator(target: any, propName: string | Symbol, descriptor: PropertyDescriptor) {
   const oldMethod = descriptor.value;
   descriptor.value = function (...args:any[]) {
-    LoaderService.instance.startLoading();
+    DecoratorStoreService.instance.dispatch(new ShowLoader())
     const result = oldMethod.apply(this, args) as Observable<any>;
     return result.pipe(
-      tap(() => LoaderService.instance.stopLoading()),
+      tap(() => DecoratorStoreService.instance.dispatch(new HideLoader())),
       catchError(err => {
-        LoaderService.instance.stopLoading();
+        DecoratorStoreService.instance.dispatch(new HideLoader())
         return err;
       })
     );

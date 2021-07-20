@@ -1,4 +1,4 @@
-<div *ngIf="!(loader.isLoading$ | async)" class="cart-view__wrapper">
+<div *ngIf="!(isLoading | async)" class="cart-view__wrapper">
   <ng-container *ngIf="books.length">
     <button class="button cart-view__purchase-btn" (click)="cart.purchase()">Purchase</button>
     <div class="cart-view__books-wrapper">

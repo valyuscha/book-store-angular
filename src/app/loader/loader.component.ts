@@ -1,11 +1,7 @@
-import {
-  ChangeDetectionStrategy,
-  ChangeDetectorRef,
-  Component,
-  OnInit,
-  ViewRef
-} from '@angular/core';
-import {LoaderService} from 'services';
+import {ChangeDetectionStrategy, ChangeDetectorRef, Component, ViewRef} from '@angular/core';
+import {Select} from '@ngxs/store';
+import {LoaderState} from 'state/loader.state';
+import {Observable} from 'rxjs';
 
 @Component({
   selector: 'app-loader',
@@ -13,17 +9,10 @@ import {LoaderService} from 'services';
   styleUrls: ['./loader.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoaderComponent implements OnInit {
-  isLoading = false;
+export class LoaderComponent {
+  @Select(LoaderState.getIsLoadingStatus) isLoading!: Observable<boolean>;
 
-  constructor(public loader: LoaderService, private cdRef: ChangeDetectorRef) {
-  }
-
-  ngOnInit() {
-    this.loader.isLoading$.subscribe(isLoading => {
-      this.isLoading = isLoading;
-      this.detectChanges();
-    });
+  constructor(private cdRef: ChangeDetectorRef) {
   }
 
   private detectChanges() {

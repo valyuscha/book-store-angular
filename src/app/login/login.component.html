@@ -1,4 +1,4 @@
-<div *ngIf="!(loader.isLoading$ | async)" class="login__page-wrapper">
+<div *ngIf="!(isLoading | async)" class="login__page-wrapper">
   <div class="login__block-wrapper">
     <h2 class="login__title">Welcome to JS Band Store</h2>
     <form [formGroup]="signInForm" (ngSubmit)="onSubmit()">

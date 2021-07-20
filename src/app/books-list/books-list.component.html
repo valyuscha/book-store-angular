@@ -1,4 +1,4 @@
-<div *ngIf="!(loader.isLoading$ | async)" class="books-catalog__wrapper">
+<div *ngIf="!(isLoading | async)" class="books-catalog__wrapper">
   <ng-container *ngIf="(books.booksForRender$ | async) as booksForRender">
     <app-books-catalog-filters></app-books-catalog-filters>
     <div *ngIf="booksForRender.length" class="books-wrapper">

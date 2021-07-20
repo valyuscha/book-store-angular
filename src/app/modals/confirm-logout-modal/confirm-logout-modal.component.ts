@@ -1,5 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {AuthService, ModalsService} from 'services';
+import {ModalsService} from 'services';
+import {Store} from '@ngxs/store';
+import {Logout} from 'actions';
 
 @Component({
   selector: 'app-confirm-logout-modal',
@@ -8,6 +10,10 @@ import {AuthService, ModalsService} from 'services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ConfirmLogoutModalComponent {
-  constructor(public modalsService: ModalsService, public auth: AuthService) {
+  constructor(public modalsService: ModalsService, private store: Store) {
+  }
+
+  logout() {
+    this.store.dispatch(new Logout());
   }
 }

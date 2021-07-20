@@ -1,4 +1,4 @@
-<div *ngIf="!(loader.isLoading$ | async)" class="book-info__wrapper">
+<div *ngIf="!(isLoading | async)" class="book-info__wrapper">
   <ng-container *ngIf="activeBook">
     <h2 class="book-info__title">{{activeBook.title}}</h2>
     <div class="book-info__content">

@@ -1,5 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {AuthService, CartService, ModalsService} from 'services';
+import {CartService, ModalsService} from 'services';
+import {Select} from '@ngxs/store';
+import {AuthState} from 'state';
+import {Observable} from 'rxjs';
+import {IUser} from 'interfaces';
 
 @Component({
   selector: 'app-header',
@@ -8,6 +12,9 @@ import {AuthService, CartService, ModalsService} from 'services';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class HeaderComponent {
-  constructor(public auth: AuthService, public modalsService: ModalsService, public cart: CartService) {
+  @Select(AuthState.getIsLoggedIn) isLoggedIn!: Observable<boolean>;
+  @Select(AuthState.getUserInfo) userInfo!: Observable<IUser>;
+
+  constructor(public modalsService: ModalsService, public cart: CartService) {
   }
 }

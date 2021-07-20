@@ -1,6 +1,9 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {AuthService, LoaderService} from 'services';
 import {FormControl, FormGroup, Validators} from '@angular/forms';
+import {Select, Store} from '@ngxs/store';
+import {LoaderState} from 'state';
+import {Observable} from 'rxjs';
+import {Login} from '../actions';
 
 const errorMessages: {[key: string]: string} = {
   required: 'Enter your name',
@@ -16,9 +19,10 @@ const errorMessages: {[key: string]: string} = {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoginComponent {
+  @Select(LoaderState.getIsLoadingStatus) isLoading!: Observable<boolean>;
   signInForm: FormGroup;
 
-  constructor(public auth: AuthService, public loader: LoaderService) {
+  constructor(private store: Store) {
     this.signInForm = new FormGroup({
       userName: new FormControl(
         null,
@@ -48,7 +52,7 @@ export class LoginComponent {
 
   onSubmit() {
     if (!this.signInForm.valid) return;
-    this.auth.login(this.signInForm.getRawValue().userName)
+    this.store.dispatch(new Login((this.signInForm.getRawValue().userName)));
     this.signInForm.reset();
   }
 }

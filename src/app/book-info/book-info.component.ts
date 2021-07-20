@@ -1,8 +1,10 @@
 import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {ApiService, AuthService, LoaderService} from 'services';
+import {ApiService} from 'services';
 import {IDefaultBook} from '../interfaces';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {Select} from '@ngxs/store';
+import {LoaderState} from '../state/loader.state';
 
 @Component({
   selector: 'app-book-info',
@@ -11,6 +13,7 @@ import {Subscription} from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookInfoComponent implements OnInit, OnDestroy {
+  @Select(LoaderState.getIsLoadingStatus) isLoading!: Observable<boolean>;
   private subscription = new Subscription();
 
   activeBook: IDefaultBook = {
@@ -25,7 +28,7 @@ export class BookInfoComponent implements OnInit, OnDestroy {
     tags: ['']
   };
 
-  constructor(public router: ActivatedRoute, public api: ApiService, public loader: LoaderService, private auth: AuthService) {
+  constructor(public router: ActivatedRoute, public api: ApiService) {
   }
 
   ngOnInit() {
