@@ -20,7 +20,7 @@
         </div>
         <div class="purchase-amount__wrapper" routerLink="/cart">
           <span class="purchase-amount">
-            {{(cart.totalCount$ | async)! <= 9 ? (cart.totalCount$ | async) : '+9'}}
+            {{(totalCount | async)! <= 9 ? (totalCount | async) : '+9'}}
           </span>
         </div>
       </div>

@@ -1,7 +1,7 @@
-import {State, Action, StateContext, Selector} from '@ngxs/store';
-import {SetUserInfo, Login, Logout, HideLoader} from 'actions';
+import {State, Action, StateContext, Selector, Store} from '@ngxs/store';
+import {SetUserInfo, Login, Logout, HideLoader, Clear} from 'actions';
 import {IUser} from 'interfaces';
-import {ApiService, CartService, LocalStorageService} from 'services';
+import {ApiService, LocalStorageService} from 'services';
 import {tap} from 'rxjs/operators';
 import {Router} from '@angular/router';
 import {Injectable} from '@angular/core';
@@ -26,7 +26,7 @@ export class AuthState {
     private api: ApiService,
     private localStorage: LocalStorageService,
     private router: Router,
-    private cart: CartService
+    private store: Store
   ) {}
 
   @Selector()
@@ -61,7 +61,7 @@ export class AuthState {
   logout({patchState, dispatch}: StateContext<AuthStateModel>) {
     this.localStorage.remove('userInfo');
     this.router.navigateByUrl('/login');
-    this.cart.clear();
+    dispatch(new Clear());
     dispatch(new HideLoader());
     patchState({isLoggedIn: false})
   }

@@ -2,9 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ICartBook, IDefaultBook, IUser} from 'interfaces';
 import {ProgressIndicator} from 'decorators';
-import {Select, Store} from '@ngxs/store';
+import {Store} from '@ngxs/store';
 import {GlobalDataState} from 'state';
-import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +36,7 @@ export class ApiService {
   @ProgressIndicator
   purchase(booksList: ICartBook[]) {
     return this.http.post(
-      `${this.apiHost}/books/purchase`,
+      `${this.apiHost}/purchase`,
       JSON.stringify({books: booksList})
     );
   }

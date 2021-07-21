@@ -1,11 +1,15 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {ICartBook, IDefaultBook} from 'interfaces';
-import {AddRemoveBookFromCartAction} from 'globalTypes';
+import {IDefaultBook} from 'interfaces';
+import {AddRemoveBookFromCartAction, BookInfo} from 'globalTypes';
 import {disableAddingNewBooksIfThereISNoCurrentBooks} from './disableAddingNewBooks';
-import {CartService, ModalsService} from 'services';
+import {ModalsService} from 'services';
 import {getChangedBooksCount} from './getChangedBooksCount';
 import {countTotalPriceOfSameBooks} from 'utils';
-import {Subscription} from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
+import {getCurrentBook} from './getCurrentBook';
+import {Select, Store} from '@ngxs/store';
+import {CartState} from 'state';
+import {Add} from '../../actions';
 
 @Component({
   selector: 'app-book-price-count-info',
@@ -14,6 +18,7 @@ import {Subscription} from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
+  @Select(CartState.getBooks) books!: Observable<BookInfo>;
   private subscription = new Subscription();
 
   @Input() activeBook: IDefaultBook = {
@@ -33,13 +38,16 @@ export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
   booksCount = 1;
   canIncreaseBooksAmount = true;
   canDecreaseBooksAmount = false;
+  currentBookAddedCount = 0;
 
-  constructor(private cart: CartService, private modals: ModalsService) {
+  constructor(private modals: ModalsService, private store: Store) {
   }
 
   ngOnInit() {
-    this.subscription = this.cart.books$.subscribe(books => this.addedBooks = books);
+    this.subscription = this.books.subscribe(books => this.addedBooks = books);
     this.totalPrice = this.activeBook.price;
+    const currentBookInCart = getCurrentBook(this.addedBooks, this.activeBook)[0];
+    this.currentBookAddedCount = currentBookInCart ? currentBookInCart[1].addedCount : 0;
 
     disableAddingNewBooksIfThereISNoCurrentBooks(
       this.addedBooks,
@@ -63,14 +71,8 @@ export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
   }
 
   changeBooksAmount(action: AddRemoveBookFromCartAction) {
-    const currentBookInCart: [string, ICartBook][] = Object.entries<ICartBook>(this.addedBooks)
-      .filter((book) => {
-        if (+book[0] === +this.activeBook.id) return book;
-        return
-      })
-
     const changedBooksCount = getChangedBooksCount(
-      currentBookInCart,
+      getCurrentBook(this.addedBooks, this.activeBook),
       this.booksCount,
       this.activeBook,
       this.setCanIncreaseBooksCount.bind(this),
@@ -93,8 +95,12 @@ export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
   addNewBookToCart() {
     if (this.booksCount) {
       this.modals.showAddedBookToCartModal();
-      this.cart.add(this.activeBook, this.booksCount, this.totalPrice);
+      this.store.dispatch(new Add((
+        {book: this.activeBook, addedCount: this.booksCount, currentBookTotalPrice: this.totalPrice}
+      )));
       this.booksCount = 1;
+      const currentBookInCart = getCurrentBook(this.addedBooks, this.activeBook)[0];
+      this.currentBookAddedCount = currentBookInCart ? currentBookInCart[1].addedCount : 0;
 
       disableAddingNewBooksIfThereISNoCurrentBooks(
         this.addedBooks,

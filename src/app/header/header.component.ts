@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {CartService, ModalsService} from 'services';
+import {ModalsService} from 'services';
 import {Select} from '@ngxs/store';
-import {AuthState} from 'state';
+import {AuthState, CartState} from 'state';
 import {Observable} from 'rxjs';
 import {IUser} from 'interfaces';
 
@@ -14,7 +14,8 @@ import {IUser} from 'interfaces';
 export class HeaderComponent {
   @Select(AuthState.getIsLoggedIn) isLoggedIn!: Observable<boolean>;
   @Select(AuthState.getUserInfo) userInfo!: Observable<IUser>;
+  @Select(CartState.getTotalCount) totalCount!: Observable<number>;
 
-  constructor(public modalsService: ModalsService, public cart: CartService) {
+  constructor(public modalsService: ModalsService) {
   }
 }

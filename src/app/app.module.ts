@@ -25,7 +25,7 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {NgxsModule} from '@ngxs/store';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 import {DecoratorStoreService} from 'services';
-import {AuthState, LoaderState, ServerErrorMessageState, GlobalDataState} from 'state';
+import {AuthState, LoaderState, ServerErrorMessageState, GlobalDataState, CartState} from 'state';
 
 @NgModule({
   declarations: [
@@ -51,7 +51,7 @@ import {AuthState, LoaderState, ServerErrorMessageState, GlobalDataState} from '
     SpinnerInfinityModule,
     RouterModule.forRoot(routes),
     AngularSvgIconModule.forRoot(),
-    NgxsModule.forRoot([LoaderState, ServerErrorMessageState, AuthState, GlobalDataState]),
+    NgxsModule.forRoot([LoaderState, ServerErrorMessageState, AuthState, GlobalDataState, CartState]),
     NgxsReduxDevtoolsPluginModule.forRoot()
   ],
   providers: [

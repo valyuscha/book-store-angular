@@ -1,6 +1,6 @@
 <div *ngIf="!(isLoading | async)" class="cart-view__wrapper">
   <ng-container *ngIf="books.length">
-    <button class="button cart-view__purchase-btn" (click)="cart.purchase()">Purchase</button>
+    <button class="button cart-view__purchase-btn" (click)="purchase()">Purchase</button>
     <div class="cart-view__books-wrapper">
       <div *ngFor="let book of books; trackBy: trackByFn" class="cart-item__wrapper">
         <a class="cart-item__title" [routerLink]="'/catalog/' + book.id">
@@ -14,7 +14,7 @@
                 'can-increase-decrease-btn': book.canUserIncreaseBooksCount,
                 'can-not-increase-decrease-btn': !book.canUserIncreaseBooksCount
               }"
-              (click)="cart.edit(book.id, 'add')">
+              (click)="edit(book.id, 'add')">
               <img src="assets/images/plusIcon.svg" alt="">
             </button>
             <p class="cart-item__books-count">{{book.addedCount}}</p>
@@ -24,24 +24,24 @@
                 'can-increase-decrease-btn': book.canUserDecreaseBooksCount,
                 'can-not-increase-decrease-btn': !book.canUserDecreaseBooksCount
               }"
-              (click)="cart.edit(book.id, 'remove')">
+              (click)="edit(book.id, 'remove')">
               <img src="assets/images/minusIcon.svg" alt="">
             </button>
           </div>
           <p class="cart-item__total-price">{{book.currentBookTotalPrice}}$</p>
-          <button class="cart-item__trash-btn" (click)="cart.remove(book.id)">
+          <button class="cart-item__trash-btn" (click)="remove(book.id)">
             <img src="assets/images/trash.svg" alt="">
           </button>
         </div>
       </div>
     </div>
     <div class="cart-view__empty-trash_total-count-price_wrapper">
-      <button class="button cart-view__empty-trash-btn" (click)="cart.clear()">
+      <button class="button cart-view__empty-trash-btn" (click)="clear()">
         Empty Trash
       </button>
       <div class="cart-view__total-count-price_wrapper">
-        <p>Total count: {{cart.totalCount$ | async}}</p>
-        <p>Total price: {{cart.totalPrice$ | async}}$</p>
+        <p>Total count: {{totalCount | async}}</p>
+        <p>Total price: {{totalPrice | async}}$</p>
       </div>
     </div>
   </ng-container>
