@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {ICartBook, IDefaultBook, IUser} from 'interfaces';
 import {ProgressIndicator} from 'decorators';
-import {Select} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {GlobalDataState} from 'state';
 import {Observable} from 'rxjs';
 
@@ -10,11 +10,10 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-  @Select(GlobalDataState.getApiHost) apiHost$!: Observable<string>;
   private apiHost: string = '';
 
-  constructor(private http: HttpClient) {
-    this.apiHost$.subscribe(host => this.apiHost = host);
+  constructor(private http: HttpClient, store: Store) {
+    store.select(GlobalDataState.getApiHost).subscribe(host => this.apiHost = host);
   }
 
   @ProgressIndicator
