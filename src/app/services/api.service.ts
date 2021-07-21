@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {ICartBook, IDefaultBook, IUser} from 'interfaces';
 import {ProgressIndicator} from 'decorators';
 import {Store} from '@ngxs/store';
+import { Observable } from 'rxjs';
 import {GlobalDataState} from 'state';
 
 @Injectable({
@@ -24,7 +25,7 @@ export class ApiService {
   }
 
   @ProgressIndicator
-  getAllBooks() {
+  getAllBooks(): Observable<IDefaultBook[]> {
     return this.http.get<IDefaultBook[]>(`${this.apiHost}/books`);
   }
 

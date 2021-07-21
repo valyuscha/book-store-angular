@@ -1,7 +1,9 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {BooksService} from 'services';
-import {filterBooksByPrice} from './filterBooksByPrice';
-import {filterBooksByName} from './filterBooksByName';
+import { ChangeDetectionStrategy, Component, Output, EventEmitter } from '@angular/core';
+
+export interface FilterData {
+  name: string;
+  price: number[];
+}
 
 @Component({
   selector: 'app-books-catalog-filters',
@@ -11,21 +13,19 @@ import {filterBooksByName} from './filterBooksByName';
 })
 export class BooksCatalogFiltersComponent {
   areFiltersVisible: boolean = window.innerWidth > 400;
+  current: FilterData = {
+    name: '',
+    price: []
+  }
+  @Output() changeFilter = new EventEmitter<FilterData>();
 
-  constructor(private books: BooksService) {
+  setPrice(event: any) {
+    this.current.price = JSON.parse(event.srcElement.value);
+    this.changeFilter.emit({...this.current});
   }
 
-  filterByPrice(selectValue: string, searchValue: string) {
-    const filteredByNameBooks = filterBooksByName(searchValue, this.books.allBooks);
-    const filteredByPriceBooks = filterBooksByPrice(selectValue, filteredByNameBooks);
-
-    this.books.setBooksForRender(filteredByPriceBooks);
-  }
-
-  filterByName(searchValue: string, selectValue: string) {
-    const filteredByPriceBooks = filterBooksByPrice(selectValue, this.books.allBooks);
-    const filteredByNameBooks = filterBooksByName(searchValue, filteredByPriceBooks);
-
-    this.books.setBooksForRender(filteredByNameBooks);
+  setName(event: any) {
+    this.current.name = event.srcElement.value.toLowerCase().trim();
+    this.changeFilter.emit({...this.current});
   }
 }
