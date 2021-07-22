@@ -1,5 +1,5 @@
-import {ChangeDetectionStrategy, Component, OnDestroy, OnInit} from '@angular/core';
-import {Observable, Subscription} from 'rxjs';
+import {ChangeDetectionStrategy, Component} from '@angular/core';
+import {Observable} from 'rxjs';
 import {ICartBook} from 'interfaces';
 import {Select, Store} from '@ngxs/store';
 import {CartState, LoaderState} from 'state';
@@ -12,25 +12,13 @@ import {Clear, Edit, Purchase, Remove} from 'actions';
   styleUrls: ['./cart.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class CartComponent {
   @Select(LoaderState.getIsLoadingStatus) isLoading!: Observable<boolean>;
-  @Select(CartState.getBooks) books$!: Observable<BookInfo>;
+  @Select(CartState.getBooks) books$!: Observable<ICartBook[]>;
   @Select(CartState.getTotalCount) totalCount!: Observable<number>;
   @Select(CartState.getTotalPrice) totalPrice!: Observable<number>;
-  private subscription = new Subscription();
-  books: ICartBook[] = [];
 
   constructor(private store: Store) {
-  }
-
-  ngOnInit() {
-    this.subscription = this.books$.subscribe(books => {
-      this.books = books ? Object.entries(books).map(book => {
-        const bookInfo = {...book[1]};
-        bookInfo.id = book[0];
-        return bookInfo;
-      }) : [];
-    })
   }
 
   trackByFn(index: string | number) {
@@ -51,9 +39,5 @@ export class CartComponent implements OnInit, OnDestroy {
 
   purchase() {
     this.store.dispatch(new Purchase());
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
   }
 }
