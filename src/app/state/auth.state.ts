@@ -25,8 +25,7 @@ export class AuthState {
   constructor(
     private api: ApiService,
     private localStorage: LocalStorageService,
-    private router: Router,
-    private store: Store
+    private router: Router
   ) {}
 
   @Selector()

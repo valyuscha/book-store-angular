@@ -1,54 +1,56 @@
-<div *ngIf="!(isLoading | async)" class="cart-view__wrapper">
-  <ng-container *ngIf="books.length">
-    <button class="button cart-view__purchase-btn" (click)="purchase()">Purchase</button>
-    <div class="cart-view__books-wrapper">
-      <div *ngFor="let book of books; trackBy: trackByFn" class="cart-item__wrapper">
-        <a class="cart-item__title" [routerLink]="'/catalog/' + book.id">
-          {{book.title}}
-        </a>
-        <div class="cart-item__counter_total-price_delete-book_wrapper">
-          <div class="cart-item__books-counter-wrapper">
-            <button
-              class="cart-item__increase-decrease-btn"
-              [ngClass]="{
-                'can-increase-decrease-btn': book.canUserIncreaseBooksCount,
-                'can-not-increase-decrease-btn': !book.canUserIncreaseBooksCount
+<div *ngIf="!(isLoading$ | async)" class="cart-view__wrapper">
+  <ng-container *ngIf="books$ | async as books">
+    <ng-container *ngIf="books.length > 0">
+      <button class="button cart-view__purchase-btn" (click)="purchase()">Purchase</button>
+      <div class="cart-view__books-wrapper">
+        <div *ngFor="let book of books; trackBy: trackByFn" class="cart-item__wrapper">
+          <a class="cart-item__title" [routerLink]="'/catalog/' + book.id">
+            {{book.title}}
+          </a>
+          <div class="cart-item__counter_total-price_delete-book_wrapper">
+            <div class="cart-item__books-counter-wrapper">
+              <button
+                class="cart-item__increase-decrease-btn"
+                [ngClass]="{
+                'can-increase-decrease-btn': book.addedCount < book.availableCount,
+                'can-not-increase-decrease-btn': book.addedCount === book.availableCount
               }"
-              (click)="edit(book.id, 'add')">
-              <img src="assets/images/plusIcon.svg" alt="">
-            </button>
-            <p class="cart-item__books-count">{{book.addedCount}}</p>
-            <button
-              class="cart-item__increase-decrease-btn"
-              [ngClass]="{
-                'can-increase-decrease-btn': book.canUserDecreaseBooksCount,
-                'can-not-increase-decrease-btn': !book.canUserDecreaseBooksCount
+                (click)="edit(book.id, 'add')">
+                <img src="assets/images/plusIcon.svg" alt="">
+              </button>
+              <p class="cart-item__books-count">{{book.addedCount}}</p>
+              <button
+                class="cart-item__increase-decrease-btn"
+                [ngClass]="{
+                'can-increase-decrease-btn': book.addedCount > 1,
+                'can-not-increase-decrease-btn': book.addedCount === 1
               }"
-              (click)="edit(book.id, 'remove')">
-              <img src="assets/images/minusIcon.svg" alt="">
+                (click)="edit(book.id, 'remove')">
+                <img src="assets/images/minusIcon.svg" alt="">
+              </button>
+            </div>
+            <p class="cart-item__total-price">{{book.currentBookTotalPrice}}$</p>
+            <button class="cart-item__trash-btn" (click)="remove(book.id)">
+              <img src="assets/images/trash.svg" alt="">
             </button>
           </div>
-          <p class="cart-item__total-price">{{book.currentBookTotalPrice}}$</p>
-          <button class="cart-item__trash-btn" (click)="remove(book.id)">
-            <img src="assets/images/trash.svg" alt="">
-          </button>
         </div>
       </div>
-    </div>
-    <div class="cart-view__empty-trash_total-count-price_wrapper">
-      <button class="button cart-view__empty-trash-btn" (click)="clear()">
-        Empty Trash
-      </button>
-      <div class="cart-view__total-count-price_wrapper">
-        <p>Total count: {{totalCount | async}}</p>
-        <p>Total price: {{totalPrice | async}}$</p>
+      <div class="cart-view__empty-trash_total-count-price_wrapper">
+        <button class="button cart-view__empty-trash-btn" (click)="clear()">
+          Empty Trash
+        </button>
+        <div class="cart-view__total-count-price_wrapper">
+          <p>Total count: {{totalCount$ | async}}</p>
+          <p>Total price: {{totalPrice$ | async}}$</p>
+        </div>
       </div>
+    </ng-container>
+    <div *ngIf="!books.length" class="empty-cart-block__wrapper">
+      <svg-icon
+        src="assets/images/cartIcon.svg"
+        [svgStyle]="{'fill': '#464646', 'width.px': 40}"></svg-icon>
+      <p>The cart is empty...</p>
     </div>
   </ng-container>
-  <div *ngIf="!books.length" class="empty-cart-block__wrapper">
-    <svg-icon
-      src="assets/images/cartIcon.svg"
-      [svgStyle]="{'fill': '#464646', 'width.px': 40}"></svg-icon>
-    <p>The cart is empty...</p>
-  </div>
 </div>

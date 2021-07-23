@@ -1,5 +1,5 @@
 import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
-import {IDefaultBook} from 'interfaces';
+import {ICartBook, IDefaultBook} from 'interfaces';
 import {AddRemoveBookFromCartAction, BookInfo} from 'globalTypes';
 import {disableAddingNewBooksIfThereISNoCurrentBooks} from './disableAddingNewBooks';
 import {ModalsService} from 'services';
@@ -18,7 +18,7 @@ import {Add} from '../../actions';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
-  @Select(CartState.getBooks) books!: Observable<BookInfo>;
+  @Select(CartState.getBooks) books!: Observable<ICartBook[]>;
   private subscription = new Subscription();
 
   @Input() activeBook: IDefaultBook = {
@@ -33,7 +33,7 @@ export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
     tags: ['']
   };
 
-  addedBooks = {};
+  addedBooks: ICartBook[] = [];
   totalPrice = 0;
   booksCount = 1;
   canIncreaseBooksAmount = true;
@@ -44,10 +44,12 @@ export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.subscription = this.books.subscribe(books => this.addedBooks = books);
+    this.subscription = this.books.subscribe((books: ICartBook[]) => {this.addedBooks = books});
     this.totalPrice = this.activeBook.price;
     const currentBookInCart = getCurrentBook(this.addedBooks, this.activeBook)[0];
     this.currentBookAddedCount = currentBookInCart ? currentBookInCart[1].addedCount : 0;
+
+    console.log('Added ', this.addedBooks);
 
     disableAddingNewBooksIfThereISNoCurrentBooks(
       this.addedBooks,
