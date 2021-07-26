@@ -1,10 +1,10 @@
-import {IDefaultBook} from 'interfaces';
+import {ICartBook} from 'interfaces';
 import {AddRemoveBookFromCartAction} from 'globalTypes';
 
 export class Add {
   static readonly type = '[CART] add';
 
-  constructor(public payload: {book: IDefaultBook, addedCount: number, currentBookTotalPrice: number}) {
+  constructor(public payload: ICartBook) {
   }
 }
 
@@ -28,4 +28,7 @@ export class Clear {
 
 export class Purchase {
   static readonly type = '[CART] purchase';
+
+  constructor(public payload: ICartBook[]) {
+  }
 }

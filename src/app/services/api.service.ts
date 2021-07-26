@@ -11,9 +11,14 @@ import {GlobalDataState} from 'state';
 })
 export class ApiService {
   private apiHost: string = '';
+  private _purchaseMessage: string = '';
 
   constructor(private http: HttpClient, store: Store) {
     store.select(GlobalDataState.getApiHost).subscribe(host => this.apiHost = host);
+  }
+
+  get purchaseMessage(): string {
+    return this._purchaseMessage;
   }
 
   @ProgressIndicator
@@ -35,10 +40,10 @@ export class ApiService {
   }
 
   @ProgressIndicator
-  purchase(booksList: ICartBook[]) {
-    return this.http.post(
+  purchase(booksList: ICartBook[]): Observable<{message: string}> {
+    return this.http.post<{message: string}>(
       `${this.apiHost}/purchase`,
-      JSON.stringify({books: booksList})
-    );
+      {books: booksList}
+    )
   }
 }

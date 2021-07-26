@@ -2,6 +2,7 @@ import {State, Selector} from '@ngxs/store';
 
 export class GlobalDataStateModel {
   apiHost!: string;
+
 }
 
 @State<GlobalDataStateModel>({

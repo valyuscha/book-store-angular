@@ -1,15 +1,10 @@
-import {ChangeDetectionStrategy, Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, OnInit} from '@angular/core';
 import {ICartBook, IDefaultBook} from 'interfaces';
-import {AddRemoveBookFromCartAction, BookInfo} from 'globalTypes';
-import {disableAddingNewBooksIfThereISNoCurrentBooks} from './disableAddingNewBooks';
-import {ModalsService} from 'services';
-import {getChangedBooksCount} from './getChangedBooksCount';
-import {countTotalPriceOfSameBooks} from 'utils';
-import {Observable, Subscription} from 'rxjs';
-import {getCurrentBook} from './getCurrentBook';
 import {Select, Store} from '@ngxs/store';
 import {CartState} from 'state';
-import {Add} from '../../actions';
+import {BehaviorSubject, Observable} from 'rxjs';
+import {Add} from 'actions';
+import {ModalsService} from 'services';
 
 @Component({
   selector: 'app-book-price-count-info',
@@ -17,106 +12,75 @@ import {Add} from '../../actions';
   styleUrls: ['./book-price-count-info.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class BookPriceCountInfoComponent implements OnInit, OnDestroy {
-  @Select(CartState.getBooks) books!: Observable<ICartBook[]>;
-  private subscription = new Subscription();
+export class BookPriceCountInfoComponent implements OnInit {
+  @Input() activeBook!: IDefaultBook;
+  @Select(CartState.getBooks) cartBooks$!: Observable<ICartBook[]>;
 
-  @Input() activeBook: IDefaultBook = {
-    id: '',
-    count: 0,
-    price: 0,
-    title: '',
-    author: '',
-    level: '',
-    description: '',
-    cover: '',
-    tags: ['']
-  };
+  activeBookAddedCount$ = new BehaviorSubject<number>(0);
+  activeBookInCart: ICartBook | null = null;
+  canInc: boolean = true;
+  canDec: boolean = false;
+  totalPrice: number = 0;
 
-  addedBooks: ICartBook[] = [];
-  totalPrice = 0;
-  booksCount = 1;
-  canIncreaseBooksAmount = true;
-  canDecreaseBooksAmount = false;
-  currentBookAddedCount = 0;
+  constructor(private store: Store, private modals: ModalsService) { }
 
-  constructor(private modals: ModalsService, private store: Store) {
-  }
-
-  ngOnInit() {
-    this.subscription = this.books.subscribe((books: ICartBook[]) => {this.addedBooks = books});
+  ngOnInit(): void {
     this.totalPrice = this.activeBook.price;
-    const currentBookInCart = getCurrentBook(this.addedBooks, this.activeBook)[0];
-    this.currentBookAddedCount = currentBookInCart ? currentBookInCart[1].addedCount : 0;
 
-    console.log('Added ', this.addedBooks);
+    this.cartBooks$.subscribe(books => books.filter(item => {
+      if (item.id === this.activeBook.id) {
+        this.activeBookInCart = item;
+      }
+    }));
 
-    disableAddingNewBooksIfThereISNoCurrentBooks(
-      this.addedBooks,
-      this.activeBook,
-      this.setBooksCount.bind(this),
-      this.setCanIncreaseBooksCount.bind(this),
-      this.setTotalPrice.bind(this)
-    )
-  }
+    this.activeBookAddedCount$.subscribe(count => {
+      if (!this.activeBookInCart) {
+        this.canInc = count < this.activeBook.count;
+      } else {
+        this.canInc = count < this.activeBookInCart.availableCount - this.activeBookInCart.addedCount;
+      }
 
-  setBooksCount(count: number) {
-    this.booksCount = count;
-  }
+      this.canDec = count > 1;
+      this.totalPrice = Math.round((this.activeBook.price * count) * 100) / 100;
+    })
 
-  setCanIncreaseBooksCount(canIncrease: boolean) {
-    this.canIncreaseBooksAmount = canIncrease;
-  }
-
-  setTotalPrice(price: number) {
-    this.totalPrice = price;
-  }
-
-  changeBooksAmount(action: AddRemoveBookFromCartAction) {
-    const changedBooksCount = getChangedBooksCount(
-      getCurrentBook(this.addedBooks, this.activeBook),
-      this.booksCount,
-      this.activeBook,
-      this.setCanIncreaseBooksCount.bind(this),
-      action
-    );
-
-    if (changedBooksCount) {
-      this.totalPrice = countTotalPriceOfSameBooks(this.activeBook.price, changedBooksCount);
+    if (this.canInc) {
+      this.activeBookAddedCount$.next(1);
     }
-
-    if (changedBooksCount > 1) {
-      this.canDecreaseBooksAmount = true;
-    } else if (changedBooksCount === 1) {
-      this.canDecreaseBooksAmount = false;
-    }
-
-    this.booksCount = changedBooksCount;
   }
 
-  addNewBookToCart() {
-    if (this.booksCount) {
+  increaseBooksCount(): void {
+    const prev = this.activeBookAddedCount$.getValue();
+    if (this.canInc) {
+      this.activeBookAddedCount$.next(prev + 1);
+    }
+  }
+
+  decreaseBooksCount(): void {
+    const prev = this.activeBookAddedCount$.getValue();
+    if (this.canDec) {
+      this.activeBookAddedCount$.next(prev - 1);
+    }
+  }
+
+  addToCart(): void {
+    if (this.activeBookAddedCount$.getValue() !== 0) {
+      this.store.dispatch(new Add({
+        id: this.activeBook.id,
+        addedCount: this.activeBookAddedCount$.getValue(),
+        availableCount: this.activeBook.count,
+        totalPrice: this.totalPrice,
+        price: this.activeBook.price,
+        title: this.activeBook.title
+      }))
+
       this.modals.showAddedBookToCartModal();
-      this.store.dispatch(new Add((
-        {book: this.activeBook, addedCount: this.booksCount, currentBookTotalPrice: this.totalPrice}
-      )));
-      this.booksCount = 1;
-      const currentBookInCart = getCurrentBook(this.addedBooks, this.activeBook)[0];
-      this.currentBookAddedCount = currentBookInCart ? currentBookInCart[1].addedCount : 0;
-
-      disableAddingNewBooksIfThereISNoCurrentBooks(
-        this.addedBooks,
-        this.activeBook,
-        this.setBooksCount.bind(this),
-        this.setCanIncreaseBooksCount.bind(this),
-        this.setTotalPrice.bind(this)
-      )
-
-      this.canDecreaseBooksAmount = false;
     }
-  }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    if (this.canInc) {
+      this.activeBookAddedCount$.next(1);
+    } else {
+      this.activeBookAddedCount$.next(0);
+    }
   }
 }

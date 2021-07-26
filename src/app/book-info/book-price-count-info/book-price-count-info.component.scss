@@ -1,4 +1,4 @@
-.book-price-count-info__wrapper {
+.section-wrapper {
   width: 100%;
   height: fit-content;
   padding: 15px;
@@ -8,52 +8,60 @@
   flex-direction: column;
   align-items: flex-end;
   box-sizing: border-box;
-}
 
-.info-part {
-  &__wrapper {
+  .info-part {
     display: flex;
     width: 100%;
     justify-content: space-between;
     margin-bottom: 15px;
-  }
 
-  &__label {
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  &__value {
-    font-size: 16px;
-  }
-
-  &__count-value {
-    display: flex;
-    width: 100px;
-    justify-content: space-between;
-
-    button {
-      border: none;
-      height: 22px;
-      width: 22px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    p {
+    .label {
       font-size: 16px;
-      margin: 0 10px;
+      font-weight: 700;
     }
 
-    img {
-      width: 12px;
+    .value {
+      font-size: 16px;
+    }
+
+    .count-value {
+      display: flex;
+      width: 100px;
+      justify-content: space-between;
+
+      button {
+        border: none;
+        height: 22px;
+        width: 22px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        img {
+          width: 12px;
+        }
+      }
+
+      .can-inc-dec-btn {
+        background: #009898;
+        cursor: pointer;
+      }
+
+      .can-not-inc-dec-btn {
+        background: #464646;
+        cursor: not-allowed;
+      }
+
+      .count {
+        font-size: 16px;
+        margin: 0 10px;
+      }
     }
   }
 
-  &__add-to-cart-btn {
-    width: fit-content;
+  .add-to-cart-btn {
+    width: 100%;
     margin-top: 25px;
   }
 }

@@ -1,282 +1,251 @@
-.cart-view {
-  &__wrapper {
-    width: 90%;
-    max-width: 1250px;
-    margin: 0 auto 15px;
-  }
+.page-wrapper {
+  width: 90%;
+  max-width: 1250px;
+  margin: 0 auto 15px;
 
-  &__purchase-btn {
+  .purchase-btn {
     width: fit-content;
-    margin-left: calc(100% - 110.88px);
     background: #be1036;
+    margin-left: calc(100% - 110.88px);
   }
 
-  &__books-wrapper {
+  .cart-items-wrapper {
     margin-top: 40px;
+
+    .cart-item-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid #464646;
+      background: #cccccc;
+      padding: 10px;
+
+      .title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        font-size: 18px;
+        color: #464646;
+        font-weight: 700;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+
+      .counter_total-price_delete-book_wrapper {
+        min-width: 20%;
+        display: flex;
+        justify-content: space-between;
+
+        .counter-wrapper {
+          width: 100px;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          button {
+            border: none;
+            height: 22px;
+            width: 22px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            img {
+              width: 12px;
+            }
+          }
+
+          .can-inc-dec {
+            background: #009898;
+            cursor: pointer;
+          }
+
+          .can-not-inc-dec {
+            background: #464646;
+            cursor: not-allowed;
+          }
+
+          .count {
+            font-size: 16px;
+            margin: 0 5px;
+            font-weight: 600;
+          }
+        }
+
+        .total-price {
+          font-size: 16px;
+          font-weight: 600;
+          width: 100px;
+          text-align: center;
+        }
+
+        .trash-btn {
+          background: none;
+          border: none;
+          height: 20px;
+          cursor: pointer;
+
+          img {
+            width: 18px;
+          }
+        }
+      }
+
+      &:first-of-type {
+        border-top: none;
+        border-radius: 5px 5px 0 0;
+      }
+
+      &:last-of-type {
+        border-radius: 0 0 5px 5px;
+      }
+    }
   }
 
-  &__empty-trash_total-count-price_wrapper {
+  .empty-trash_total-count-price_wrapper {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-top: 30px;
+
+    .empty-trash-btn {
+      width: fit-content;
+      background: #be1036;
+    }
+
+    .total-count-price-wrapper {
+      display: flex;
+
+      .total-count-price {
+        font-size: 16px;
+        font-weight: 700;
+        margin-left: 15px;
+
+        &:first-of-type {
+          margin-left: 0;
+        }
+      }
+    }
   }
 
-  &__empty-trash-btn {
-    width: fit-content;
-    background: #be1036;
-  }
+  .empty-cart-block {
+    margin-top: 110px;
+    text-align: center;
 
-  &__total-count-price_wrapper {
-    display: flex;
-
-    p {
+    .empty-cart-message {
       font-size: 16px;
-      font-weight: 700;
-      margin-left: 15px;
-
-      &:first-of-type {
-        margin-left: 0;
-      }
-    }
-  }
-}
-
-.empty-cart-block__wrapper {
-  margin-top: 110px;
-  text-align: center;
-
-  svg-icon {
-    width: 40px;
-  }
-
-  p {
-    font-size: 16px;
-    font-weight: 600;
-    margin-top: 15px;
-  }
-}
-
-@media screen and (min-width: 650px) {
-  .cart-view {
-    &__wrapper {
-      padding-top: 110px;
-    }
-  }
-}
-
-@media screen and (max-width: 649px) {
-  .cart-view {
-    &__total-count-price_wrapper {
-      p {
-        font-size: 14px;
-      }
-    }
-  }
-
-  .empty-cart-block__wrapper {
-    margin-top: 70px
-  }
-}
-
-@media screen and (max-width: 450px) {
-  .cart-view {
-    &__empty-trash_total-count-price_wrapper {
-      flex-direction: column-reverse;
-      align-items: flex-end;
-    }
-
-    &__empty-trash-btn {
+      font-weight: 600;
       margin-top: 15px;
     }
   }
 }
 
-@media screen and (max-width: 385px) {
-  .cart-view {
-    &__purchase-btn {
-      margin-left: calc(100% - 100.77px);
-    }
-  }
-}
-
-.cart-item {
-  &__wrapper {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #464646;
-    background: #cccccc;
-    padding: 10px;
-
-    &:first-of-type {
-      border-top-left-radius: 5px;
-      border-top-right-radius: 5px;
-    }
-
-    &:last-of-type {
-      border: none;
-      border-bottom-left-radius: 5px;
-      border-bottom-right-radius: 5px;
-    }
-  }
-
-  &__title {
-    max-width: 60%;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
-    font-size: 18px;
-    color: #464646;
-    font-weight: 700;
-    text-decoration: none;
-
-    &:hover {
-      text-decoration: underline;
-    }
-  }
-
-  &__counter_total-price_delete-book_wrapper {
-    width: 20%;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  &__books-counter-wrapper {
-    width: 100px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-
-  &__increase-decrease-btn {
-    border: none;
-    height: 22px;
-    width: 22px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    img {
-      width: 12px;
-    }
-  }
-
-  &__books-count {
-    font-size: 16px;
-    margin: 0 5px;
-    font-weight: 600;
-  }
-
-  &__total-price {
-    font-size: 16px;
-    font-weight: 600;
-  }
-
-  &__trash-btn {
-    background: none;
-    border: none;
-    height: 20px;
-    cursor: pointer;
-
-    img {
-      width: 18px;
-    }
-  }
-}
-
-@media screen and (max-width: 1150px) {
-  .cart-item {
-    &__counter_total-price_delete-book_wrapper {
-      width: 25%;
-    }
-  }
+.only-one-book {
+  border-radius: 5px !important;
 }
 
 @media screen and (max-width: 900px) {
-  .cart-item {
-    &__counter_total-price_delete-book_wrapper {
-      width: 30%;
-    }
+  .counter_total-price_delete-book_wrapper {
+    width: 30%;
   }
 }
 
 @media screen and (max-width: 750px) {
-  .cart-item {
-    &__counter_total-price_delete-book_wrapper {
-      width: 35%;
-    }
+  .counter_total-price_delete-book_wrapper {
+    width: 35%;
+  }
+}
+
+@media screen and (min-width: 650px) {
+  .page-wrapper {
+    padding-top: 110px;
   }
 }
 
 @media screen and (max-width: 650px) {
-  .cart-item {
-    &__title {
-      max-width: 50%;
-    }
+  .title {
+    max-width: 50%;
+  }
 
-    &__counter_total-price_delete-book_wrapper {
-      width: 40%;
-    }
+  .counter_total-price_delete-book_wrapper {
+    width: 40%;
   }
 }
 
 @media screen and (max-width: 649px) {
-  .cart-item {
-    &__title {
-      font-size: 14px;
-    }
+  .empty-cart-block {
+    margin-top: 70px;
+  }
 
-    &__books-count {
-      font-size: 14px;
-    }
+  .total-count-price {
+    font-size: 14px;
+  }
 
-    &__total-price {
-      font-size: 14px;
-    }
+  .title {
+    font-size: 14px;
+  }
+
+  .count {
+    font-size: 14px;
+  }
+
+  .total-price {
+    font-size: 14px;
   }
 }
 
 @media screen and (max-width: 550px) {
-  .cart-item {
-    &__title {
-      width: 40%;
-    }
+  .title {
+    width: 40%;
+  }
 
-    &__counter_total-price_delete-book_wrapper {
-      width: 50%;
-    }
+  .counter_total-price_delete-book_wrapper {
+    width: 50%;
   }
 }
 
 @media screen and (max-width: 450px) {
-  .cart-item {
-    &__counter_total-price_delete-book_wrapper {
-      width: 55%;
-    }
+  .empty-trash_total-count-price_wrapper {
+    flex-direction: column-reverse;
+    align-items: flex-end;
 
-    &__books-counter-wrapper {
-      width: 80px;
+    .empty-trash-btn {
+      margin-top: 15px;
     }
+  }
+
+  .counter_total-price_delete-book_wrapper {
+    width: 55%;
+  }
+
+  .counter-wrapper {
+    width: 80px;
+  }
+}
+
+@media screen and (max-width: 385px) {
+  .purchase-btn {
+    margin-left: calc(100% - 100.77px);
   }
 }
 
 @media screen and (max-width: 350px) {
-  .cart-item {
-    &__books-counter-wrapper {
-      width: 65px;
-    }
+  .counter-wrapper {
+    width: 65px;
 
-    &__increase-decrease-btn {
+    button {
       width: 18px;
       height: 18px;
     }
+  }
 
-    &__trash-btn {
-      img {
-        width: 15px;
-      }
+  .trash-btn {
+    img {
+      width: 15px;
     }
   }
 }

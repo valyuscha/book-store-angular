@@ -2,9 +2,7 @@ export interface ICartBook {
   id: string
   addedCount: number
   availableCount: number
-  // canUserDecreaseBooksCount: boolean
-  // canUserIncreaseBooksCount: boolean
-  currentBookTotalPrice: number
+  totalPrice: number
   price: number
   title: string
 }

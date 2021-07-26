@@ -1,7 +1,7 @@
 import {ChangeDetectionStrategy, Component} from '@angular/core';
 import {ModalsService} from 'services';
 import {Store} from '@ngxs/store';
-import {Clear, Logout} from 'actions';
+import {Logout} from 'actions';
 
 @Component({
   selector: 'app-confirm-logout-modal',

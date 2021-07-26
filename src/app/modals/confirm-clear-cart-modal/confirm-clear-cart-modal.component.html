@@ -1,0 +1,9 @@
+<div *ngIf="modals.isConfirmClearCartModalVisible$ | async" class="modal__wrapper">
+  <div class="modal__content-wrapper">
+    <h2 class="modal__message">Do you want to clear cart?</h2>
+    <div class="modal__btns-wrapper">
+      <button class="button modal__btn" (click)="modals.hideConfirmClearCartModal()">No</button>
+      <button class="button modal__btn" (click)="clearCart()">Yes</button>
+    </div>
+  </div>
+</div>

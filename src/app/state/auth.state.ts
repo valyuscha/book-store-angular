@@ -1,4 +1,4 @@
-import {State, Action, StateContext, Selector, Store} from '@ngxs/store';
+import {State, Action, StateContext, Selector} from '@ngxs/store';
 import {SetUserInfo, Login, Logout, HideLoader, Clear} from 'actions';
 import {IUser} from 'interfaces';
 import {ApiService, LocalStorageService} from 'services';

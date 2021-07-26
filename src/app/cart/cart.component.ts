@@ -1,43 +1,44 @@
-import {ChangeDetectionStrategy, Component} from '@angular/core';
-import {Observable} from 'rxjs';
-import {ICartBook} from 'interfaces';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
-import {CartState, LoaderState} from 'state';
+import {Observable, Subscription} from 'rxjs';
+import {ICartBook} from 'interfaces';
+import {CartState} from 'state';
 import {AddRemoveBookFromCartAction} from 'globalTypes';
-import {Clear, Edit, Purchase, Remove} from 'actions';
+import {Edit, Purchase, Remove} from 'actions';
+import {ApiService, ModalsService} from 'services';
 
 @Component({
   selector: 'app-cart',
   templateUrl: './cart.component.html',
-  styleUrls: ['./cart.component.scss'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  styleUrls: ['./cart.component.scss']
 })
-export class CartComponent {
-  @Select(LoaderState.getIsLoadingStatus) isLoading$!: Observable<boolean>;
+export class CartComponent implements OnInit, OnDestroy {
   @Select(CartState.getBooks) books$!: Observable<ICartBook[]>;
   @Select(CartState.getTotalCount) totalCount$!: Observable<number>;
   @Select(CartState.getTotalPrice) totalPrice$!: Observable<number>;
+  private subscription = new Subscription();
+  books: ICartBook[] = [];
 
-  constructor(private store: Store) {
+  constructor(private store: Store, public modals: ModalsService, private api: ApiService) {
   }
 
-  trackByFn(index: string | number) {
-    return index;
+  ngOnInit() {
+    this.subscription = this.books$.subscribe(books => this.books = books);
   }
 
-  edit(bookId: string, action: AddRemoveBookFromCartAction) {
+  editBooksCount(bookId: string, action: AddRemoveBookFromCartAction): void {
     this.store.dispatch(new Edit({bookId, action}));
   }
 
-  remove(bookId: string) {
+  deleteBook(bookId: string): void {
     this.store.dispatch(new Remove(bookId));
   }
 
-  clear() {
-    this.store.dispatch(new Clear());
+  purchase() {
+    this.store.dispatch(new Purchase(this.books));
   }
 
-  purchase() {
-    this.store.dispatch(new Purchase());
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
   }
 }

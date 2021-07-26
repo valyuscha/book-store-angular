@@ -1,26 +1,21 @@
-import {State, Action, StateContext, Selector} from '@ngxs/store';
-import {Add, Edit, Remove, Clear, Purchase} from 'actions';
-import {BookInfo} from 'globalTypes';
-import {Injectable} from '@angular/core';
-import {
-  chooseBooksAmount,
-  countAllBooks,
-  countTotalPriceOfAllBooks,
-  countTotalPriceOfSameBooks
-} from 'utils';
-import {ApiService, LocalStorageService} from 'services';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {Add, Clear, Edit, Purchase, Remove} from 'actions';
 import {ICartBook} from 'interfaces';
+import {ApiService, LocalStorageService} from 'services';
+import {Injectable} from '@angular/core';
 
 export class CartStateModel {
-  books!: BookInfo;
+  books!: ICartBook[];
+  purchaseMessage!: string;
 }
 
-const cart = localStorage.getItem('cart');
+const books = localStorage.getItem('cart');
 
 @State<CartStateModel>({
   name: 'cart',
   defaults: {
-    books: cart ? JSON.parse(cart).books : {}
+    books: books ? JSON.parse(books) : [],
+    purchaseMessage: ''
   }
 })
 @Injectable()
@@ -30,94 +25,84 @@ export class CartState {
 
   @Selector()
   static getBooks(state: CartStateModel): ICartBook[] {
-    return Object.keys(state.books).map(key => state.books[key]);
+    return state.books;
   }
 
   @Selector()
-  static getTotalCount(state: CartStateModel) {
-    return Object.keys(state.books).map(key => state.books[key])
-      .reduce((current, item) => current + item.addedCount, 0);
+  static getTotalPrice(state: CartStateModel): number {
+    return state.books.reduce((acc, item) => {
+      return Math.round((item.addedCount * item.price + acc) * 100) / 100;
+    }, 0);
   }
 
   @Selector()
-  static getTotalPrice(state: CartStateModel) {
-    return Object.keys(state.books).map(key => state.books[key])
-      .reduce((current, item) => Math.round((current + item.addedCount * item.price) * 100) / 100, 0);
+  static getTotalCount(state: CartStateModel): number {
+    return state.books.reduce((acc, item) => {
+      return Math.round((item.addedCount + acc) * 100) / 100;
+    }, 0);
   }
 
   @Action(Add)
   add({getState, patchState}: StateContext<CartStateModel>, {payload}: Add) {
-    const books = {...getState().books};
-    const activeBook = payload.book;
-
-    if (books[payload.book.id]) {
-      books[payload.book.id].addedCount += payload.addedCount;
+    const books = [...getState().books];
+    const currentBookInCart = books.filter((item: ICartBook) => item.id === payload.id);
+    if (currentBookInCart.length) {
+      currentBookInCart[0].addedCount += payload.addedCount;
     } else {
-      books[payload.book.id] = {
-        id: activeBook.id,
-        title: activeBook.title,
-        price: activeBook.price,
-        availableCount: activeBook.count,
-        // canUserIncreaseBooksCount: payload.addedCount !== activeBook.count,
-        // canUserDecreaseBooksCount: payload.addedCount !== 1,
+      books.push({
+        id: payload.id,
         addedCount: payload.addedCount,
-        currentBookTotalPrice: payload.currentBookTotalPrice
-      }
+        availableCount: payload.availableCount,
+        totalPrice: payload.totalPrice,
+        price: payload.price,
+        title: payload.title
+      });
     }
 
     patchState({books});
-    this.localStorage.set('cart', {books});
+    this.localStorage.set('cart', books);
   }
 
   @Action(Edit)
   edit({getState, patchState}: StateContext<CartStateModel>, {payload}: Edit) {
-    const books = getState().books;
-    const bookInfo = {...books[payload.bookId]};
-    const changedBooksDuplicatesAmount = chooseBooksAmount(bookInfo.addedCount, bookInfo.availableCount, payload.action);
+    const books = [...getState().books];
+    const currentBookInCart = books.filter((item: ICartBook) => item.id === payload.bookId);
 
-    // bookInfo.canUserIncreaseBooksCount = changedBooksDuplicatesAmount !== bookInfo.availableCount;
-    // bookInfo.canUserDecreaseBooksCount = changedBooksDuplicatesAmount !== 1;
-    bookInfo.addedCount = changedBooksDuplicatesAmount;
-    bookInfo.currentBookTotalPrice = countTotalPriceOfSameBooks(bookInfo.price, changedBooksDuplicatesAmount);
+    switch (payload.action) {
+      case 'add':
+        currentBookInCart[0].addedCount++;
+        break;
+      case 'remove':
+        currentBookInCart[0].addedCount--;
+        break;
+      default:
+        currentBookInCart[0].addedCount;
+    }
 
-    const filteredBooksEntries = Object.entries(books)
-      .filter(book => book[0] !== bookInfo.id);
-    const filteredBooks = Object.fromEntries(filteredBooksEntries);
-    const newBook = {[bookInfo.id]: bookInfo};
-    patchState({books: {...filteredBooks, ...newBook}});
-
-    this.localStorage.set('cart', {books: {...filteredBooks, ...newBook}});
+    patchState({books});
+    this.localStorage.set('cart', books);
   }
 
   @Action(Remove)
   remove({getState, patchState}: StateContext<CartStateModel>, {payload}: Remove) {
-    const books = getState().books;
-    const booksEntries = Object.entries(books);
-    const filteredBooks = booksEntries.filter(book => +book[0] !== +payload);
-    patchState({books: Object.fromEntries(filteredBooks)});
-
-    this.localStorage.set('cart', {books: Object.fromEntries(filteredBooks)});
+    const books = [...getState().books];
+    const filteredBooks = books.filter(item => item.id !== payload);
+    patchState({books: filteredBooks});
+    this.localStorage.set('cart', filteredBooks);
   }
 
   @Action(Clear)
   clear({patchState}: StateContext<CartStateModel>) {
-    patchState({
-      books: {}
-    })
-
-    this.localStorage.set('cart', {books: {}});
+    patchState({books: []});
+    this.localStorage.set('cart', []);
   }
 
   @Action(Purchase)
-  purchase({getState}: StateContext<CartStateModel>) {
-    const books: ICartBook[] = Object.entries(getState().books).map(book => {
-      const bookInfo = {...book[1]};
-      bookInfo.id = book[0];
-      return bookInfo;
-    });
-
-    this.api.purchase(books).subscribe(res => {
-      console.log('Response', res);
-    });
+  purchase({patchState}: StateContext<CartStateModel>, {payload}: Purchase) {
+    this.api.purchase(payload)
+      .subscribe(res => {
+        console.log(res);
+        patchState({purchaseMessage: res.message});
+      });
   }
 }

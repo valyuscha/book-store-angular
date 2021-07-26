@@ -1,31 +1,35 @@
-<div class="book-price-count-info__wrapper">
-  <div class="info-part__wrapper">
-    <p class="info-part__label">Price, $</p>
-    <p class="info-part__value">{{activeBook.price}}</p>
+<div class="section-wrapper">
+  <div class="info-part">
+    <p class="label">Price, $</p>
+    <p class="value">{{activeBook.price}}</p>
   </div>
-  <div class="info-part__wrapper">
-    <p class="info-part__label">Count</p>
-    <div class="info-part__count-value">
+  <div class="info-part">
+    <p class="label">Count</p>
+    <div class="count-value">
       <button
-        [ngClass]="{'can-increase-decrease-btn': canIncreaseBooksAmount, 'can-not-increase-decrease-btn': !canIncreaseBooksAmount}"
-        (click)="changeBooksAmount('add')">
+        [ngClass]="{'can-inc-dec-btn': canInc, 'can-not-inc-dec-btn': !canInc}"
+        (click)="increaseBooksCount()">
         <img src="assets/images/plusIcon.svg" alt="">
       </button>
-      <p>{{booksCount}}</p>
+      <p class="count">{{activeBookAddedCount$ | async}}</p>
       <button
-        [ngClass]="{'can-increase-decrease-btn': canDecreaseBooksAmount, 'can-not-increase-decrease-btn': !canDecreaseBooksAmount}"
-        (click)="changeBooksAmount('remove')">
+        [ngClass]="{'can-inc-dec-btn': canDec, 'can-not-inc-dec-btn': !canDec}"
+        (click)="decreaseBooksCount()">
         <img src="assets/images/minusIcon.svg" alt="">
       </button>
     </div>
   </div>
-  <div class="info-part__wrapper">
-    <p class="info-part__label">Total price, $</p>
-    <p class="info-part__value">{{totalPrice}}</p>
+  <div class="info-part">
+    <p class="label">Total price, $</p>
+    <p class="value">{{totalPrice}}</p>
   </div>
-  <div class="info-part__wrapper">
-    <p class="info-part__label">Added count</p>
-    <p class="info-part__value">{{currentBookAddedCount}}</p>
+  <div class="info-part">
+    <p class="label">Available count</p>
+    <p class="value">{{activeBook.count}}</p>
   </div>
-  <button class="button info-part__add-to-cart-btn" (click)="addNewBookToCart()">Add to Cart</button>
+  <div class="info-part">
+    <p class="label">Added count</p>
+    <p class="value">{{activeBookInCart ? activeBookInCart.addedCount : 0}}</p>
+  </div>
+  <button class="button add-to-cart-btn" (click)="addToCart()">Add to Cart</button>
 </div>
