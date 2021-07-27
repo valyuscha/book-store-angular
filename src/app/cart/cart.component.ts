@@ -12,33 +12,29 @@ import {ApiService, ModalsService} from 'services';
   templateUrl: './cart.component.html',
   styleUrls: ['./cart.component.scss']
 })
-export class CartComponent implements OnInit, OnDestroy {
+export class CartComponent {
   @Select(CartState.getBooks) books$!: Observable<ICartBook[]>;
   @Select(CartState.getTotalCount) totalCount$!: Observable<number>;
   @Select(CartState.getTotalPrice) totalPrice$!: Observable<number>;
-  private subscription = new Subscription();
-  books: ICartBook[] = [];
 
-  constructor(private store: Store, public modals: ModalsService, private api: ApiService) {
-  }
-
-  ngOnInit() {
-    this.subscription = this.books$.subscribe(books => this.books = books);
-  }
-
-  editBooksCount(bookId: string, action: AddRemoveBookFromCartAction): void {
-    this.store.dispatch(new Edit({bookId, action}));
-  }
+  constructor(private store: Store, public modals: ModalsService) {}
 
   deleteBook(bookId: string): void {
     this.store.dispatch(new Remove(bookId));
   }
 
-  purchase() {
-    this.store.dispatch(new Purchase(this.books));
+  setNumberOfBook(book: ICartBook, step: number) {
+    if (book.addedCount + step < 0 || book.addedCount + step > book.availableCount) {
+      return;
+    }
+    if (book.addedCount + step === 0) {
+      this.deleteBook(book.id);
+      return;
+    }
+    this.store.dispatch(new Edit({bookId: book.id, number: book.addedCount + step}));
   }
 
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+  purchase() {
+    this.store.dispatch(new Purchase());
   }
 }

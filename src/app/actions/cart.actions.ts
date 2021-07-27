@@ -11,7 +11,7 @@ export class Add {
 export class Edit {
   static readonly type = '[CART] edit';
 
-  constructor(public payload: {bookId: string, action: AddRemoveBookFromCartAction}) {
+  constructor(public payload: {bookId: string, number: number}) {
   }
 }
 
@@ -28,7 +28,4 @@ export class Clear {
 
 export class Purchase {
   static readonly type = '[CART] purchase';
-
-  constructor(public payload: ICartBook[]) {
-  }
 }
