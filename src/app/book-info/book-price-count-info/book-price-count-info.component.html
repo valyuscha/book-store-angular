@@ -11,7 +11,7 @@
         (click)="increaseBooksCount()">
         <img src="assets/images/plusIcon.svg" alt="">
       </button>
-      <p class="count">{{activeBookAddedCount$ | async}}</p>
+      <p class="count">{{activeBookAddedCount}}</p>
       <button
         [ngClass]="{'can-inc-dec-btn': canDec, 'can-not-inc-dec-btn': !canDec}"
         (click)="decreaseBooksCount()">
@@ -21,7 +21,7 @@
   </div>
   <div class="info-part">
     <p class="label">Total price, $</p>
-    <p class="value">{{totalPrice}}</p>
+    <p class="value">{{activeBookAddedCount * activeBook.price}}</p>
   </div>
   <div class="info-part">
     <p class="label">Available count</p>
@@ -29,7 +29,7 @@
   </div>
   <div class="info-part">
     <p class="label">Added count</p>
-    <p class="value">{{activeBookInCart ? activeBookInCart.addedCount : 0}}</p>
+    <p class="value">{{(activeBookInCart$ | async)?.addedCount || 0}}</p>
   </div>
   <button class="button add-to-cart-btn" (click)="addToCart()">Add to Cart</button>
 </div>

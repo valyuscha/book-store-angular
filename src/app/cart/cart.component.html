@@ -1,50 +1,52 @@
 <div class="page-wrapper">
-  <ng-container *ngIf="books.length">
-    <button class="button purchase-btn" (click)="purchase()">Purchase</button>
-    <div class="cart-items-wrapper">
-      <div
-        *ngFor="let book of books"
-        [class.only-one-book]="(books$ | async)?.length === 1"
-        class="cart-item-wrapper">
-        <a class="title" [routerLink]="'/catalog/' + book.id">{{book.title}}</a>
-        <div class="counter_total-price_delete-book_wrapper">
-          <div class="counter-wrapper">
-            <button [ngClass]="{
+  <ng-container *ngIf="books$ | async as books">
+    <ng-container *ngIf="books.length">
+      <button class="button purchase-btn" (click)="purchase()">Purchase</button>
+      <div class="cart-items-wrapper">
+        <div
+          *ngFor="let book of books"
+          [class.only-one-book]="(books$ | async)?.length === 1"
+          class="cart-item-wrapper">
+          <a class="title" [routerLink]="'/catalog/' + book.id">{{book.title}}</a>
+          <div class="counter_total-price_delete-book_wrapper">
+            <div class="counter-wrapper">
+              <button [ngClass]="{
               'can-inc-dec': book.addedCount < book.availableCount,
               'can-not-inc-dec': book.addedCount === book.availableCount
             }"
-            (click)="book.addedCount < book.availableCount && editBooksCount(book.id, 'add')">
-              <img src="assets/images/plusIcon.svg" alt="">
-            </button>
-            <p class="count">{{book.addedCount}}</p>
-            <button [ngClass]="{
+                      (click)="setBooksNumber(book, 1)">
+                <img src="assets/images/plusIcon.svg" alt="">
+              </button>
+              <p class="count">{{book.addedCount}}</p>
+              <button [ngClass]="{
               'can-inc-dec': book.addedCount > 1,
               'can-not-inc-dec': book.addedCount === 1
             }"
-            (click)="book.addedCount > 1 && editBooksCount(book.id, 'remove')">
-              <img src="assets/images/minusIcon.svg" alt="">
+                      (click)="setBooksNumber(book, -1)">
+                <img src="assets/images/minusIcon.svg" alt="">
+              </button>
+            </div>
+            <p class="total-price">{{book.totalPrice}}$</p>
+            <button class="trash-btn" (click)="deleteBook(book.id)">
+              <img src="assets/images/trash.svg" alt="">
             </button>
           </div>
-          <p class="total-price">{{book.totalPrice}}$</p>
-          <button class="trash-btn" (click)="deleteBook(book.id)">
-            <img src="assets/images/trash.svg" alt="">
-          </button>
         </div>
       </div>
-    </div>
-    <div class="empty-trash_total-count-price_wrapper">
-      <button class="button empty-trash-btn" (click)="modals.showConfirmClearCartModal()">Empty Trash</button>
-      <div class="total-count-price-wrapper">
-        <p class="total-count-price">Total count: {{totalCount$ | async}}</p>
-        <p class="total-count-price">Total price: {{totalPrice$ | async}}</p>
+      <div class="empty-trash_total-count-price_wrapper">
+        <button class="button empty-trash-btn" (click)="modals.showConfirmClearCartModal()">Empty Trash</button>
+        <div class="total-count-price-wrapper">
+          <p class="total-count-price">Total count: {{totalCount$ | async}}</p>
+          <p class="total-count-price">Total price: {{totalPrice$ | async}}</p>
+        </div>
       </div>
+      <app-confirm-clear-cart-modal></app-confirm-clear-cart-modal>
+    </ng-container>
+    <div *ngIf="!books.length" class="empty-cart-block">
+      <svg-icon
+        src="assets/images/cartIcon.svg"
+        [svgStyle]="{'fill': '#464646', 'width': '40px'}"></svg-icon>
+      <p class="empty-cart-message">The cart is empty...</p>
     </div>
-    <app-confirm-clear-cart-modal></app-confirm-clear-cart-modal>
   </ng-container>
-  <div *ngIf="!books.length" class="empty-cart-block">
-    <svg-icon
-      src="assets/images/cartIcon.svg"
-      [svgStyle]="{'fill': '#464646', 'width': '40px'}"></svg-icon>
-    <p class="empty-cart-message">The cart is empty...</p>
-  </div>
 </div>

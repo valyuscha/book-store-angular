@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { CartComponent } from './cart.component';
+import {CartComponent} from './cart.component';
+import {NgxsModule} from '@ngxs/store';
 
 describe('CartComponent', () => {
   let component: CartComponent;
@@ -8,9 +9,12 @@ describe('CartComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CartComponent ]
+      imports: [
+        NgxsModule.forRoot([])
+      ],
+      declarations: [CartComponent]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {

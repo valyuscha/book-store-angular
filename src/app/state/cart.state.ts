@@ -1,25 +1,24 @@
-import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {Action, NgxsOnInit, Selector, State, StateContext} from '@ngxs/store';
 import {Add, Clear, Edit, Purchase, Remove} from 'actions';
 import {ICartBook} from 'interfaces';
 import {ApiService, LocalStorageService} from 'services';
 import {Injectable} from '@angular/core';
+import {tap} from 'rxjs/operators';
 
 export class CartStateModel {
   books!: ICartBook[];
   purchaseMessage!: string;
 }
 
-const books = localStorage.getItem('cart');
-
 @State<CartStateModel>({
   name: 'cart',
   defaults: {
-    books: books ? JSON.parse(books) : [],
+    books: [],
     purchaseMessage: ''
   }
 })
 @Injectable()
-export class CartState {
+export class CartState implements NgxsOnInit {
   constructor(private localStorage: LocalStorageService, private api: ApiService) {
   }
 
@@ -40,6 +39,12 @@ export class CartState {
     return state.books.reduce((acc, item) => {
       return Math.round((item.addedCount + acc) * 100) / 100;
     }, 0);
+  }
+
+  ngxsOnInit({patchState}: StateContext<any>): any {
+    patchState({
+      books: this.localStorage.getObject<ICartBook[]>('cart') as ICartBook[] || []
+    });
   }
 
   @Action(Add)
@@ -66,21 +71,13 @@ export class CartState {
   @Action(Edit)
   edit({getState, patchState}: StateContext<CartStateModel>, {payload}: Edit) {
     const books = [...getState().books];
-    const currentBookInCart = books.filter((item: ICartBook) => item.id === payload.bookId);
+    const currentBookInCart = books.find((item: ICartBook) => item.id === payload.bookId);
 
-    switch (payload.action) {
-      case 'add':
-        currentBookInCart[0].addedCount++;
-        break;
-      case 'remove':
-        currentBookInCart[0].addedCount--;
-        break;
-      default:
-        currentBookInCart[0].addedCount;
+    if (currentBookInCart) {
+      currentBookInCart.addedCount = payload.number;
+      patchState({books});
+      this.localStorage.set('cart', books);
     }
-
-    patchState({books});
-    this.localStorage.set('cart', books);
   }
 
   @Action(Remove)
@@ -98,11 +95,10 @@ export class CartState {
   }
 
   @Action(Purchase)
-  purchase({patchState}: StateContext<CartStateModel>, {payload}: Purchase) {
-    this.api.purchase(payload)
-      .subscribe(res => {
-        console.log(res);
+  purchase({getState, patchState}: StateContext<CartStateModel>) {
+    return this.api.purchase(getState().books)
+      .pipe(tap(res => {
         patchState({purchaseMessage: res.message});
-      });
+      }));
   }
 }

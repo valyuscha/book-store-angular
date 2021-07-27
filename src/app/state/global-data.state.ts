@@ -1,4 +1,5 @@
 import {State, Selector} from '@ngxs/store';
+import {Injectable} from '@angular/core';
 
 export class GlobalDataStateModel {
   apiHost!: string;
@@ -11,6 +12,7 @@ export class GlobalDataStateModel {
     apiHost: 'https://js-band-store-api.glitch.me'
   }
 })
+@Injectable()
 export class GlobalDataState {
   @Selector()
   static getApiHost(state: GlobalDataStateModel) {
