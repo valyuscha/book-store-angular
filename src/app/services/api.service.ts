@@ -11,14 +11,9 @@ import {GlobalDataState} from 'state';
 })
 export class ApiService {
   private apiHost: string = '';
-  private _purchaseMessage: string = '';
 
-  constructor(private http: HttpClient, store: Store) {
+  constructor(private http: HttpClient, private store: Store) {
     store.select(GlobalDataState.getApiHost).subscribe(host => this.apiHost = host);
-  }
-
-  get purchaseMessage(): string {
-    return this._purchaseMessage;
   }
 
   @ProgressIndicator
